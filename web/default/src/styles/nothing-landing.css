@@ -1,0 +1,249 @@
+/*
+Copyright (C) 2023-2026 QuantumNous
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+For commercial licensing, please contact support@quantumnous.com
+*/
+
+/* ──────────────────────────────────────────────────────────────────────
+ * Nothing-design landing system — scoped tokens
+ *
+ * All values live behind the `--nd-*` namespace and are *only* defined on
+ * `.modplex-landing`, so they never leak into the app's own theme tokens
+ * (`--border`, `--background`, …) — shared primitives (dropdowns, popovers)
+ * rendered inside the landing still read the global theme.
+ *
+ * Light is the default; dark is activated by the app's existing `.dark`
+ * class on <html> (driven by theme-provider). Both modes are first-class.
+ * Reference: .claude/skills/nothing-design/references/tokens.md
+ * ────────────────────────────────────────────────────────────────────── */
+
+/* `.nd-scope` carries ONLY the token values (no bg/color/font), so portaled
+ * surfaces (dropdowns, popovers) that render outside `.modplex-landing` can
+ * still read `--nd-*`. `.dark` lives on <html>, an ancestor of the portal, so
+ * the dark overrides resolve there too. */
+.modplex-landing,
+.modplex-auth,
+.nd-scope {
+  /* Grayscale canvas — Light Mode ("printed technical manual") */
+  --nd-bg: #f5f5f5;
+  --nd-surface: #ffffff;
+  --nd-surface-raised: #f0f0f0;
+  --nd-border: #e8e8e8;
+  --nd-border-visible: #cccccc;
+  --nd-text-disabled: #999999;
+  --nd-text-secondary: #666666;
+  --nd-text-primary: #1a1a1a;
+  --nd-text-display: #000000;
+  --nd-interactive: #007aff;
+
+  /* Signal colors — identical across modes */
+  --nd-accent: #d71921;
+  --nd-accent-subtle: rgba(215, 25, 33, 0.15);
+  --nd-success: #4a9e5c;
+  --nd-warning: #d4a843;
+
+  /* Typefaces */
+  --nd-font-display: 'Doto Variable', 'Space Mono', monospace;
+  --nd-font-body:
+    'Space Grotesk Variable', 'DM Sans', system-ui, sans-serif;
+  --nd-font-mono: 'Space Mono', 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+.dark .modplex-landing,
+.dark .modplex-auth,
+.dark .nd-scope {
+  /* Grayscale canvas — Dark Mode ("instrument panel in a dark room", OLED) */
+  --nd-bg: #000000;
+  --nd-surface: #111111;
+  --nd-surface-raised: #1a1a1a;
+  --nd-border: #222222;
+  --nd-border-visible: #333333;
+  --nd-text-disabled: #666666;
+  --nd-text-secondary: #999999;
+  --nd-text-primary: #e8e8e8;
+  --nd-text-display: #ffffff;
+  --nd-interactive: #5b9bf6;
+}
+
+.modplex-landing {
+  background-color: var(--nd-bg);
+  color: var(--nd-text-primary);
+  font-family: var(--nd-font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Portaled nd surfaces inherit the body font + the instrument-panel feel. */
+.nd-scope {
+  font-family: var(--nd-font-body);
+  color: var(--nd-text-primary);
+}
+
+/* ── Type roles ─────────────────────────────────────────────────────── */
+
+/* Doto display — 36px+ only, tight tracking, never body text */
+.nd-display {
+  font-family: var(--nd-font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--nd-text-display);
+  line-height: 0.95;
+}
+
+/* Space Mono instrument-panel label — ALL CAPS, wide tracking */
+.nd-label {
+  font-family: var(--nd-font-mono);
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--nd-text-secondary);
+}
+
+.nd-mono {
+  font-family: var(--nd-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Dot-matrix motif ───────────────────────────────────────────────── */
+.nd-dot-grid {
+  background-image: radial-gradient(
+    circle,
+    var(--nd-border-visible) 1px,
+    transparent 1px
+  );
+  background-size: 16px 16px;
+}
+
+.nd-dot-grid-subtle {
+  background-image: radial-gradient(
+    circle,
+    var(--nd-border) 0.5px,
+    transparent 0.5px
+  );
+  background-size: 12px 12px;
+}
+
+/* ── Scene orchestration ────────────────────────────────────────────── */
+/* Every scene is stacked full-bleed; the navigator toggles visibility and
+ * GSAP drives the transitions. Non-active scenes are removed from the a11y
+ * tree + pointer flow but kept mounted so GSAP can animate them. */
+.nd-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.nd-scene[data-active='false'] {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.nd-scene[data-active='true'] {
+  pointer-events: auto;
+  visibility: visible;
+}
+
+/* Hairline divider — used sparingly, only in structurally identical rows */
+.nd-rule {
+  background-color: var(--nd-border);
+}
+
+/* Reduced-motion: the navigator already disables GSAP tweens; ensure no
+ * residual transform/opacity is left applied. */
+@media (prefers-reduced-motion: reduce) {
+  .nd-scene,
+  .nd-scene * {
+    transition: none !important;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+ * Auth surface (sign-in / sign-up / forgot / otp / reset / oauth callback)
+ *
+ * The shared shadcn primitives (Input, Button, Form*, dividers) are built
+ * entirely on the app's theme CSS variables. Rather than restyle each form,
+ * we REMAP those variables to the `--nd-*` palette inside `.modplex-auth`
+ * and drop the radius to 0 — every primitive then renders in the Nothing
+ * idiom (sharp, flat, monochrome) with its variant/focus/disabled semantics
+ * intact. Both modes resolve automatically via the `--nd-*` switch above.
+ * ────────────────────────────────────────────────────────────────────── */
+.modplex-auth {
+  --radius: 0px;
+
+  --background: var(--nd-bg);
+  --foreground: var(--nd-text-primary);
+  --card: var(--nd-surface);
+  --card-foreground: var(--nd-text-primary);
+  --popover: var(--nd-surface);
+  --popover-foreground: var(--nd-text-primary);
+
+  --primary: var(--nd-text-display);
+  --primary-foreground: var(--nd-bg);
+  --secondary: var(--nd-surface-raised);
+  --secondary-foreground: var(--nd-text-primary);
+  --muted: var(--nd-surface-raised);
+  --muted-foreground: var(--nd-text-secondary);
+  --accent: var(--nd-surface-raised);
+  --accent-foreground: var(--nd-text-display);
+
+  --border: var(--nd-border-visible);
+  --input: var(--nd-border-visible);
+  --ring: var(--nd-text-display);
+
+  /* Red is the one signal — keep it for validation/destructive only. */
+  --destructive: var(--nd-accent);
+
+  background-color: var(--nd-bg);
+  color: var(--nd-text-primary);
+  font-family: var(--nd-font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Hero-sized fields, set into the surface for subtle separation. Target the
+ * <input> element directly: FormControl rewrites the wrapper's data-slot to
+ * `form-control`, so a [data-slot='input'] selector would miss form fields. */
+.modplex-auth input:not([type='checkbox']):not([type='radio']):not([type='file']) {
+  height: 2.75rem;
+  padding-inline: 0.875rem;
+  font-size: 0.9375rem;
+  background-color: var(--nd-surface);
+}
+
+/* Instrument-panel labels — Space Mono, ALL CAPS, calm. */
+.modplex-auth [data-slot='form-label'] {
+  font-family: var(--nd-font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nd-text-secondary);
+}
+
+/* Primary CTA gets real presence; outline/ghost buttons keep their height. */
+.modplex-auth [data-slot='button'][type='submit'] {
+  height: 2.75rem;
+}
+
+/* Validation text — the lone red, mono for the technical voice. */
+.modplex-auth [data-slot='form-message'] {
+  font-family: var(--nd-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
