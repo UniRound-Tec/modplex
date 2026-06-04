@@ -247,3 +247,85 @@ For commercial licensing, please contact support@quantumnous.com
   font-size: 11px;
   letter-spacing: 0.02em;
 }
+
+/* ── Auth left-panel motion system ──────────────────────────────────────
+ * Nothing Glyph-inspired rotating arcs — concentric rings with gaps,
+ * rotating at different speeds and directions. Evokes the Nothing Phone
+ * glyph interface: mechanical, precise, mesmerizing.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+.nd-glyph-container {
+  position: relative;
+  width: min(320px, 50vw);
+  height: min(320px, 50vw);
+}
+
+.nd-glyph-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+}
+
+/* Ring 1 — outer, slow clockwise, 3/4 arc */
+.nd-glyph-ring-1 {
+  inset: 0;
+  border-color: var(--nd-border-visible);
+  border-right-color: transparent;
+  animation: nd-glyph-spin 12s linear infinite;
+}
+
+/* Ring 2 — middle, counter-clockwise, 1/2 arc */
+.nd-glyph-ring-2 {
+  inset: 20%;
+  border-color: var(--nd-text-disabled);
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  animation: nd-glyph-spin 8s linear infinite reverse;
+}
+
+/* Ring 3 — inner, fast clockwise, 1/4 arc */
+.nd-glyph-ring-3 {
+  inset: 38%;
+  border-color: transparent;
+  border-top-color: var(--nd-text-secondary);
+  animation: nd-glyph-spin 5s linear infinite;
+}
+
+/* Center dot — pulsing red accent */
+.nd-glyph-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background-color: var(--nd-accent);
+  border-radius: 50%;
+  animation: nd-glyph-pulse 3s ease-in-out infinite;
+}
+
+@keyframes nd-glyph-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes nd-glyph-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1);   }
+  50%       { opacity: 0.4; transform: scale(0.6); }
+}
+
+/* Accent dot pulse in brand logo */
+.nd-auth-accent-pulse {
+  animation: nd-glyph-pulse 3s ease-in-out infinite;
+}
+
+/* Disable all auth motion when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .nd-glyph-ring,
+  .nd-glyph-dot,
+  .nd-auth-accent-pulse {
+    animation: none !important;
+  }
+  .nd-glyph-dot { opacity: 1; transform: none; }
+  .nd-auth-accent-pulse { opacity: 1; transform: none; }
+}

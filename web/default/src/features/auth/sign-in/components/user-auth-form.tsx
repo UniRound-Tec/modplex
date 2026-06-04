@@ -359,7 +359,7 @@ export function UserAuthForm({
               control={form.control}
               name='password'
               render={({ field }) => (
-                <FormItem className='relative'>
+                <FormItem>
                   <FormLabel>{t('Password')}</FormLabel>
                   <FormControl>
                     <PasswordInput
@@ -368,15 +368,19 @@ export function UserAuthForm({
                     />
                   </FormControl>
                   <FormMessage />
-                  <Link
-                    to='/forgot-password'
-                    className='text-muted-foreground absolute end-0 -top-0.5 z-10 text-sm font-medium hover:opacity-75'
-                  >
-                    {t('Forgot password?')}
-                  </Link>
                 </FormItem>
               )}
             />
+
+            {/* Forgot password — right-aligned, Nothing mono label style */}
+            <div className='flex justify-end'>
+              <Link
+                to='/forgot-password'
+                className='nd-label text-[10px] tracking-[0.12em] text-[var(--nd-text-disabled)] transition-colors duration-200 hover:text-[var(--nd-text-display)]'
+              >
+                {t('Forgot password?')}
+              </Link>
+            </div>
 
             {/* Submit Button */}
             <Button
