@@ -39,6 +39,8 @@ export function Pricing() {
   const [selectedModelName, setSelectedModelName] = useState<string | null>(
     null
   )
+  // Persists across close so the drawer stays mounted for its exit animation.
+  const [drawerModelName, setDrawerModelName] = useState<string | null>(null)
 
   const {
     models,
@@ -83,6 +85,7 @@ export function Pricing() {
 
   const handleModelClick = useCallback((modelName: string) => {
     setSelectedModelName(modelName)
+    setDrawerModelName(modelName)
   }, [])
 
   const selectedModel = useMemo(
@@ -93,6 +96,19 @@ export function Pricing() {
           ) || null
         : null,
     [models, selectedModelName]
+  )
+
+  // `open` is driven by `selectedModel`; `drawerModel` keeps the last opened
+  // model (cleared only when reopened) so the drawer stays mounted through its
+  // exit animation after `selectedModelName` is reset on close.
+  const drawerModel = useMemo(
+    () =>
+      drawerModelName
+        ? (models || []).find(
+            (model) => model.model_name === drawerModelName
+          ) || null
+        : null,
+    [models, drawerModelName]
   )
 
   const availableGroups = useMemo(
@@ -147,8 +163,10 @@ export function Pricing() {
   if (isLoading) {
     return (
       <PublicLayout showMainContainer={false}>
-        <div className='mx-auto w-full max-w-[1800px] px-3 pt-16 pb-8 sm:px-6 sm:pt-20 sm:pb-10 xl:px-8'>
-          <LoadingSkeleton viewMode={viewMode} />
+        <div className='modplex-pricing nd-scope min-h-svh'>
+          <div className='mx-auto w-full max-w-7xl px-6 pt-16 pb-8 md:px-8 sm:pt-20 sm:pb-10'>
+            <LoadingSkeleton viewMode={viewMode} />
+          </div>
         </div>
       </PublicLayout>
     )
@@ -156,52 +174,48 @@ export function Pricing() {
 
   return (
     <PublicLayout showMainContainer={false}>
-      <div className='relative'>
-        <div
-          aria-hidden
-          className='pointer-events-none absolute inset-x-0 top-0 h-[600px] opacity-20 dark:opacity-[0.10]'
-          style={{
-            background: [
-              'radial-gradient(ellipse 60% 50% at 20% 20%, oklch(0.72 0.18 250 / 80%) 0%, transparent 70%)',
-              'radial-gradient(ellipse 50% 40% at 80% 15%, oklch(0.65 0.15 200 / 60%) 0%, transparent 70%)',
-              'radial-gradient(ellipse 40% 35% at 50% 70%, oklch(0.70 0.12 280 / 40%) 0%, transparent 70%)',
-            ].join(', '),
-            maskImage:
-              'linear-gradient(to bottom, black 40%, transparent 100%)',
-            WebkitMaskImage:
-              'linear-gradient(to bottom, black 40%, transparent 100%)',
-          }}
-        />
-        <PageTransition className='relative mx-auto w-full max-w-[1800px] px-3 pt-16 pb-8 sm:px-6 sm:pt-20 sm:pb-10 xl:px-8'>
-          <header className='mx-auto mb-5 max-w-3xl pt-5 text-center sm:mb-10 sm:pt-10'>
-            <p className='text-muted-foreground mb-3 text-xs font-medium tracking-widest uppercase'>
-              {t('Models Directory')}
-            </p>
-            <h1 className='text-[clamp(2rem,5.5vw,3.5rem)] leading-[1.15] font-bold tracking-tight'>
-              {t('Model Square')}
-            </h1>
-            <p className='text-muted-foreground/80 mt-3 text-sm sm:mt-4 sm:text-base'>
-              {t('This site currently has {{count}} models enabled', {
-                count: models?.length || 0,
-              })}
-            </p>
-            <p className='text-muted-foreground/60 mx-auto mt-2 max-w-2xl text-xs leading-relaxed sm:text-sm'>
-              {t(
-                'Discover curated AI models, compare pricing and capabilities, and choose the right model for every scenario.'
-              )}
-            </p>
+      <div className='modplex-pricing nd-scope min-h-svh'>
+        <PageTransition className='relative mx-auto w-full max-w-7xl px-6 pt-14 pb-10 md:px-8 sm:pt-16 sm:pb-14'>
+          {/* Header — asymmetric: identity left, the one hero number right. */}
+          <header className='border-border mb-6 border-b pb-6 sm:mb-8 sm:pb-8'>
+            <div className='flex flex-wrap items-end justify-between gap-x-8 gap-y-4'>
+              <div className='min-w-0'>
+                <p className='nd-eyebrow mb-2.5 text-[11px]'>
+                  {t('Models Directory')}
+                </p>
+                <h1 className='text-foreground text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] font-bold tracking-tight'>
+                  {t('Model Square')}
+                </h1>
+                <p className='text-muted-foreground mt-3 max-w-xl text-sm leading-relaxed'>
+                  {t(
+                    'Discover curated AI models, compare pricing and capabilities, and choose the right model for every scenario.'
+                  )}
+                </p>
+              </div>
+
+              <div className='shrink-0 text-right'>
+                <div
+                  className='nd-meta text-foreground text-[clamp(2.5rem,6vw,4rem)] leading-none font-bold tabular-nums'
+                  style={{ fontFamily: 'var(--nd-font-display)' }}
+                >
+                  {(models?.length || 0).toString().padStart(2, '0')}
+                </div>
+                <p className='nd-eyebrow mt-2 text-[10px]'>
+                  {t('Models enabled')}
+                </p>
+              </div>
+            </div>
+
             <SearchBar
               value={searchInput}
               onChange={setSearchInput}
               onClear={clearSearch}
-              placeholder={t(
-                'Search model name, provider, endpoint, or tag...'
-              )}
-              className='mx-auto mt-4 max-w-2xl sm:mt-6'
+              placeholder={t('Search model name, provider, endpoint, or tag...')}
+              className='mt-6 max-w-2xl'
             />
           </header>
 
-          <div className='grid gap-4 xl:grid-cols-[330px_minmax(0,1fr)]'>
+          <div className='grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)] xl:gap-8'>
             <PricingSidebar
               quotaTypeFilter={quotaTypeFilter}
               endpointTypeFilter={endpointTypeFilter}
@@ -223,7 +237,7 @@ export function Pricing() {
               className='hover-scrollbar sticky top-4 hidden max-h-[calc(100dvh-2rem)] self-start overflow-y-auto xl:block'
             />
 
-            <main className='min-w-0 space-y-4'>
+            <main className='min-w-0 space-y-5'>
               <PricingToolbar
                 filteredCount={filteredModels.length}
                 totalCount={models?.length}
@@ -259,13 +273,13 @@ export function Pricing() {
             </main>
           </div>
 
-          {selectedModel && (
+          {drawerModel && (
             <ModelDetailsDrawer
               open={Boolean(selectedModel)}
               onOpenChange={(open) => {
                 if (!open) setSelectedModelName(null)
               }}
-              model={selectedModel}
+              model={drawerModel}
               groupRatio={groupRatio || {}}
               usableGroup={usableGroup || {}}
               endpointMap={

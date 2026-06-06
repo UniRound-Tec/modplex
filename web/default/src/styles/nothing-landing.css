@@ -36,6 +36,7 @@ For commercial licensing, please contact support@quantumnous.com
  * the dark overrides resolve there too. */
 .modplex-landing,
 .modplex-auth,
+.nd-modal,
 .nd-scope {
   /* Grayscale canvas — Light Mode ("printed technical manual") */
   --nd-bg: #f5f5f5;
@@ -64,6 +65,7 @@ For commercial licensing, please contact support@quantumnous.com
 
 .dark .modplex-landing,
 .dark .modplex-auth,
+.dark .nd-modal,
 .dark .nd-scope {
   /* Grayscale canvas — Dark Mode ("instrument panel in a dark room", OLED) */
   --nd-bg: #000000;
@@ -183,7 +185,9 @@ For commercial licensing, please contact support@quantumnous.com
  * idiom (sharp, flat, monochrome) with its variant/focus/disabled semantics
  * intact. Both modes resolve automatically via the `--nd-*` switch above.
  * ────────────────────────────────────────────────────────────────────── */
-.modplex-auth {
+.modplex-auth,
+.modplex-pricing,
+.nd-modal {
   --radius: 0px;
 
   --background: var(--nd-bg);
@@ -209,10 +213,15 @@ For commercial licensing, please contact support@quantumnous.com
   /* Red is the one signal — keep it for validation/destructive only. */
   --destructive: var(--nd-accent);
 
-  background-color: var(--nd-bg);
   color: var(--nd-text-primary);
   font-family: var(--nd-font-body);
   -webkit-font-smoothing: antialiased;
+}
+
+/* The auth scope owns the whole viewport; modals sit on their own surface
+ * (bg-popover / bg-background, already remapped) above the page scrim. */
+.modplex-auth {
+  background-color: var(--nd-bg);
   text-rendering: optimizeLegibility;
 }
 
@@ -227,7 +236,8 @@ For commercial licensing, please contact support@quantumnous.com
 }
 
 /* Instrument-panel labels — Space Mono, ALL CAPS, calm. */
-.modplex-auth [data-slot='form-label'] {
+.modplex-auth [data-slot='form-label'],
+.nd-modal [data-slot='form-label'] {
   font-family: var(--nd-font-mono);
   font-size: 10px;
   font-weight: 400;
@@ -242,10 +252,44 @@ For commercial licensing, please contact support@quantumnous.com
 }
 
 /* Validation text — the lone red, mono for the technical voice. */
-.modplex-auth [data-slot='form-message'] {
+.modplex-auth [data-slot='form-message'],
+.nd-modal [data-slot='form-message'] {
   font-family: var(--nd-font-mono);
   font-size: 11px;
   letter-spacing: 0.02em;
+}
+
+/* Modal/sheet/drawer titles — the modal's primary layer. Space Grotesk
+ * (not mono — must read in CJK too), full-contrast display ink. */
+.nd-modal [data-slot$='-title'] {
+  color: var(--nd-text-display);
+  letter-spacing: -0.01em;
+}
+
+/* ── Pricing (Model Square) nothing-design scope ────────────────────────
+ * The pricing page owns its content area like the auth page owns the
+ * viewport: the scope above remaps app tokens to `--nd-*`, this paints the
+ * canvas and exposes the mono "instrument" voice used by the filter rail,
+ * the row metadata, and the eyebrow labels. Both modes resolve via `--nd-*`.
+ * ────────────────────────────────────────────────────────────────────────── */
+.modplex-pricing {
+  background-color: var(--nd-bg);
+  text-rendering: optimizeLegibility;
+}
+
+/* Mono instrument labels — Space Mono, tabular figures for aligned data. */
+.nd-meta {
+  font-family: var(--nd-font-mono);
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Eyebrow / section kicker — Space Mono, ALL CAPS, wide tracking, calm. */
+.nd-eyebrow {
+  font-family: var(--nd-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--nd-text-secondary);
 }
 
 /* ── Auth left-panel motion system ──────────────────────────────────────

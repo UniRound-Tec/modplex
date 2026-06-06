@@ -19,6 +19,7 @@ For commercial licensing, please contact support@quantumnous.com
 import { type ColumnDef } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
 import { getLobeIcon } from '@/lib/lobe-icon'
+import { cn } from '@/lib/utils'
 import {
   Tooltip,
   TooltipContent,
@@ -110,12 +111,19 @@ export function usePricingColumns(
         const modelIcon = modelIconKey
           ? getLobeIcon(modelIconKey, 14)
           : null
+        const hasAlias =
+          !!model.display_name && model.display_name !== model.model_name
 
         return (
           <div className='flex min-w-[200px] items-center gap-2'>
             {modelIcon}
-            <span className='truncate font-mono text-sm font-medium'>
-              {model.model_name}
+            <span
+              className={cn(
+                'truncate text-sm font-medium',
+                !hasAlias && 'font-mono'
+              )}
+            >
+              {model.display_name || model.model_name}
             </span>
           </div>
         )

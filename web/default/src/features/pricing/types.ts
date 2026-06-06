@@ -30,6 +30,7 @@ export type PricingVendor = {
 export type PricingModel = {
   id: number
   model_name: string
+  display_name?: string
   description?: string
   icon?: string
   vendor_id?: number
@@ -56,6 +57,14 @@ export type PricingModel = {
   billing_expr?: string
   /** Pricing version returned by backend, useful for cache busting */
   pricing_version?: string
+  /**
+   * Site-wide all-time usage volume (total tokens routed through this model),
+   * merged client-side from the rankings snapshot. Used for the default
+   * "Most used" sort and the usage figure shown under the price.
+   */
+  usage_tokens?: number
+  /** 1-based position in the all-time usage ranking (1 = most used). */
+  usage_rank?: number
   /**
    * Optional model metadata fields. These are not yet returned by the backend
    * and are populated client-side from {@link inferModelMetadata}.

@@ -19,6 +19,7 @@ For commercial licensing, please contact support@quantumnous.com
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useStatus } from '@/hooks/use-status'
+import { useRankings } from '@/features/rankings/hooks/use-rankings'
 import { getPricing } from '../api'
 
 export function usePricingData() {
@@ -29,6 +30,18 @@ export function usePricingData() {
     queryFn: getPricing,
     staleTime: 5 * 60 * 1000,
   })
+
+  // Site-wide all-time usage volume, used for the default "Most used" sort and
+  // the usage figure on each card. Best-effort: if rankings are unavailable the
+  // map is empty and models simply carry no usage data.
+  const { data: rankings } = useRankings('all')
+  const usageMap = useMemo(() => {
+    const map = new Map<string, { tokens: number; rank: number }>()
+    for (const m of rankings?.data?.models ?? []) {
+      map.set(m.model_name, { tokens: m.total_tokens, rank: m.rank })
+    }
+    return map
+  }, [rankings])
 
   // Ensure rates never reach zero to prevent division errors
   const priceRate = useMemo(
@@ -49,6 +62,7 @@ export function usePricingData() {
       const vendor = model.vendor_id
         ? vendorMap.get(model.vendor_id)
         : undefined
+      const usage = usageMap.get(model.model_name)
       return {
         ...model,
         key: model.model_name,
@@ -56,9 +70,11 @@ export function usePricingData() {
         vendor_icon: vendor?.icon,
         vendor_description: vendor?.description,
         group_ratio: data.group_ratio,
+        usage_tokens: usage?.tokens,
+        usage_rank: usage?.rank,
       }
     })
-  }, [data])
+  }, [data, usageMap])
 
   return {
     models,

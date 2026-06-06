@@ -17,12 +17,12 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { memo } from 'react'
-import { ChevronRight, Copy } from 'lucide-react'
+import { ArrowUpRight, Copy } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { getLobeIcon } from '@/lib/lobe-icon'
 import { cn } from '@/lib/utils'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
-import { StatusBadge } from '@/components/status-badge'
+import { formatTokens } from '@/features/rankings/lib/format'
 import { DEFAULT_TOKEN_UNIT } from '../constants'
 import {
   getDynamicDisplayGroupRatio,
@@ -31,7 +31,7 @@ import {
 import { parseTags } from '../lib/filters'
 import { isTokenBasedModel } from '../lib/model-helpers'
 import { formatPrice, formatRequestPrice } from '../lib/price'
-import type { PricingModel, TokenUnit } from '../types'
+import type { Modality, PricingModel, TokenUnit } from '../types'
 import { ModelPerfBadge, type ModelPerfBadgeData } from './model-perf-badge'
 
 export interface ModelCardProps {
@@ -44,6 +44,15 @@ export interface ModelCardProps {
   perf?: ModelPerfBadgeData
 }
 
+/** Single-letter glyphs for input modalities — Space Mono, like a test card. */
+const MODALITY_GLYPH: Record<Modality, string> = {
+  text: 'T',
+  image: 'I',
+  audio: 'A',
+  video: 'V',
+  file: 'F',
+}
+
 export const ModelCard = memo(function ModelCard(props: ModelCardProps) {
   const { t } = useTranslation()
   const { copyToClipboard } = useCopyToClipboard()
@@ -52,19 +61,21 @@ export const ModelCard = memo(function ModelCard(props: ModelCardProps) {
   const usdExchangeRate = props.usdExchangeRate ?? 1
   const showRechargePrice = props.showRechargePrice ?? false
   const isTokenBased = isTokenBasedModel(props.model)
-  const tokenUnitLabel = tokenUnit === 'K' ? '1K' : '1M'
+  const tokenUnitLabel = tokenUnit === 'K' ? '/1K' : '/1M'
   const tags = parseTags(props.model.tags)
   const groups = props.model.enable_groups || []
-  const endpoints = props.model.supported_endpoint_types || []
+  const modalities = props.model.input_modalities || []
+
   const modelIconKey = props.model.icon || props.model.vendor_icon
-  const modelIcon = modelIconKey
-    ? getLobeIcon(modelIconKey, 28)
-    : null
+  const modelIcon = modelIconKey ? getLobeIcon(modelIconKey, 22) : null
   const initial = props.model.model_name?.charAt(0).toUpperCase() || '?'
+  const hasAlias =
+    !!props.model.display_name &&
+    props.model.display_name !== props.model.model_name
+
   const isDynamicPricing =
     props.model.billing_mode === 'tiered_expr' &&
     Boolean(props.model.billing_expr)
-  const hasCachedPrice = isTokenBased && props.model.cache_ratio != null
   const dynamicSummary = isDynamicPricing
     ? getDynamicPricingSummary(props.model, {
         tokenUnit,
@@ -75,196 +86,222 @@ export const ModelCard = memo(function ModelCard(props: ModelCardProps) {
       })
     : null
 
-  const primaryGroup = groups[0]
-  const bottomTags = [...endpoints.slice(0, 2), ...tags.slice(0, 2)]
-  const hiddenCount =
-    Math.max(groups.length - 1, 0) +
-    Math.max(endpoints.length - 2, 0) +
-    Math.max(tags.length - 2, 0)
+  const vendorName = props.model.vendor_name
+  const primaryTag = tags[0]
+  const restTagCount = Math.max(tags.length - 1, 0)
+  const hasUsage =
+    props.model.usage_tokens != null && props.model.usage_tokens > 0
 
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation()
     copyToClipboard(props.model.model_name || '')
   }
 
+  // Right-hand price column: two stacked instrument readings (IN / OUT), or a
+  // single per-request / dynamic reading. Mono + tabular for aligned figures.
+  const priceColumn = dynamicSummary ? (
+    dynamicSummary.isSpecialExpression ? (
+      <span className='text-warning nd-meta text-xs'>
+        {t('Special billing expression')}
+      </span>
+    ) : (
+      <PriceLine
+        label={t('Dynamic Pricing')}
+        value={
+          dynamicSummary.primaryEntries[0]?.formatted ?? t('Dynamic Pricing')
+        }
+        unit={dynamicSummary.primaryEntries.length ? tokenUnitLabel : undefined}
+      />
+    )
+  ) : isTokenBased ? (
+    <div className='flex flex-col items-end gap-1'>
+      <PriceLine
+        label={t('Input')}
+        value={formatPrice(
+          props.model,
+          'input',
+          tokenUnit,
+          showRechargePrice,
+          priceRate,
+          usdExchangeRate
+        )}
+        unit={tokenUnitLabel}
+      />
+      <PriceLine
+        label={t('Output')}
+        value={formatPrice(
+          props.model,
+          'output',
+          tokenUnit,
+          showRechargePrice,
+          priceRate,
+          usdExchangeRate
+        )}
+        unit={tokenUnitLabel}
+      />
+    </div>
+  ) : (
+    <PriceLine
+      label={t('request')}
+      value={formatRequestPrice(
+        props.model,
+        showRechargePrice,
+        priceRate,
+        usdExchangeRate
+      )}
+    />
+  )
+
   return (
     <div
+      role='button'
+      tabIndex={0}
+      onClick={props.onClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          props.onClick()
+        }
+      }}
       className={cn(
-        'group relative flex flex-col rounded-xl border p-3 transition-colors sm:p-5',
-        'hover:bg-muted/20'
+        // Hover-driven feedback (subtle scale-up), no click/press animation.
+        // `active:transform-none!` overrides the global `[role=button]:active`
+        // scale-down so clicking doesn't shrink the card.
+        'group hover:bg-muted/40 relative flex cursor-pointer gap-4 px-3 py-4 outline-none transition-[background-color,transform,scale] duration-200 ease-out will-change-transform hover:scale-[1.01] active:transform-none! sm:px-4',
+        'focus-visible:bg-muted/40'
       )}
     >
-      {/* Header: icon + name + price + actions */}
-      <div className='flex items-start justify-between gap-2.5 sm:gap-3'>
-        <div className='flex min-w-0 items-start gap-2.5 sm:gap-3'>
-          <div className='bg-muted/40 flex size-9 shrink-0 items-center justify-center rounded-lg sm:size-10 sm:rounded-xl'>
-            {modelIcon || (
-              <span className='text-muted-foreground text-sm font-bold'>
-                {initial}
-              </span>
-            )}
-          </div>
-          <div className='min-w-0'>
-            <h3 className='text-foreground truncate font-mono text-[15px] leading-tight font-bold'>
-              {props.model.model_name}
-            </h3>
-            <div className='mt-0.5 flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-xs sm:mt-1 sm:gap-x-3'>
-              {dynamicSummary ? (
-                dynamicSummary.isSpecialExpression ? (
-                  <span className='min-w-0'>
-                    <span className='text-amber-700 dark:text-amber-300'>
-                      {t('Special billing expression')}
+      {/* Icon — colored brand glyph in a sharp bordered cell. */}
+      <div className='border-border bg-background flex size-10 shrink-0 items-center justify-center border'>
+        {modelIcon || (
+          <span className='nd-meta text-muted-foreground text-sm font-bold'>
+            {initial}
+          </span>
+        )}
+      </div>
+
+      <div className='min-w-0 flex-1'>
+        {/* Title row: name + modality glyphs ......... price column */}
+        <div className='flex items-start justify-between gap-3'>
+          <div className='min-w-0 flex-1'>
+            <div className='flex flex-wrap items-center gap-x-2.5 gap-y-1'>
+              <h3
+                className={cn(
+                  'text-foreground truncate text-[15px] leading-tight font-bold',
+                  hasAlias ? '' : 'nd-meta'
+                )}
+              >
+                {props.model.display_name || props.model.model_name}
+              </h3>
+              {modalities.length > 0 && (
+                <span className='flex items-center gap-1'>
+                  {modalities.map((m) => (
+                    <span
+                      key={m}
+                      title={m}
+                      className='border-border text-muted-foreground nd-meta flex size-4 items-center justify-center border text-[9px] leading-none'
+                    >
+                      {MODALITY_GLYPH[m] ?? m.charAt(0).toUpperCase()}
                     </span>
-                    <code className='text-muted-foreground/70 mt-0.5 line-clamp-1 block font-mono text-[11px] break-all'>
-                      {dynamicSummary.rawExpression}
-                    </code>
-                  </span>
-                ) : dynamicSummary.primaryEntries.length > 0 ? (
-                  <>
-                    {dynamicSummary.primaryEntries.map((entry) => (
-                      <span
-                        key={entry.key}
-                        className='text-muted-foreground whitespace-nowrap'
-                      >
-                        {t(entry.shortLabel)}{' '}
-                        <span className='text-foreground font-mono font-semibold'>
-                          {entry.formatted}
-                        </span>
-                        /{tokenUnitLabel}
-                      </span>
-                    ))}
-                  </>
-                ) : (
-                  <span className='text-muted-foreground text-xs'>
-                    {t('Dynamic Pricing')}
-                  </span>
-                )
-              ) : isTokenBased ? (
-                <>
-                  <span className='text-muted-foreground whitespace-nowrap'>
-                    {t('Input')}{' '}
-                    <span className='text-foreground font-mono font-semibold'>
-                      {formatPrice(
-                        props.model,
-                        'input',
-                        tokenUnit,
-                        showRechargePrice,
-                        priceRate,
-                        usdExchangeRate
-                      )}
-                    </span>
-                    /{tokenUnitLabel}
-                  </span>
-                  <span className='text-muted-foreground whitespace-nowrap'>
-                    {t('Output')}{' '}
-                    <span className='text-foreground font-mono font-semibold'>
-                      {formatPrice(
-                        props.model,
-                        'output',
-                        tokenUnit,
-                        showRechargePrice,
-                        priceRate,
-                        usdExchangeRate
-                      )}
-                    </span>
-                    /{tokenUnitLabel}
-                  </span>
-                  {hasCachedPrice && (
-                    <span className='text-muted-foreground/60 whitespace-nowrap'>
-                      {t('Cached')}{' '}
-                      <span className='font-mono'>
-                        {formatPrice(
-                          props.model,
-                          'cache',
-                          tokenUnit,
-                          showRechargePrice,
-                          priceRate,
-                          usdExchangeRate
-                        )}
-                      </span>
+                  ))}
+                </span>
+              )}
+              {primaryTag && (
+                <span className='nd-eyebrow flex items-center gap-1.5 text-[10px]'>
+                  <span
+                    aria-hidden
+                    className='bg-foreground/50 size-1.5 rounded-full'
+                  />
+                  {primaryTag}
+                  {restTagCount > 0 && (
+                    <span className='text-muted-foreground/60'>
+                      +{restTagCount}
                     </span>
                   )}
-                </>
-              ) : (
-                <span className='text-muted-foreground whitespace-nowrap'>
-                  <span className='text-foreground font-mono font-semibold'>
-                    {formatRequestPrice(
-                      props.model,
-                      showRechargePrice,
-                      priceRate,
-                      usdExchangeRate
-                    )}
-                  </span>{' '}
-                  / {t('request')}
                 </span>
               )}
             </div>
+
+            {/* Description — sits directly under the name, up to 3 lines. */}
+            <p className='text-muted-foreground mt-2 line-clamp-2 min-h-[2.6rem] text-[13px] leading-relaxed break-words [overflow-wrap:anywhere]'>
+              {props.model.description || t('No description available.')}
+            </p>
+          </div>
+
+          <div className='flex shrink-0 items-start gap-1'>
+            <div className='flex flex-col items-end gap-1'>
+              {priceColumn}
+              {hasUsage && (
+                <span className='nd-meta text-muted-foreground/50 text-[10px] whitespace-nowrap'>
+                  {formatTokens(props.model.usage_tokens as number)}{' '}
+                  {t('tokens')}
+                </span>
+              )}
+            </div>
+            <button
+              type='button'
+              onClick={handleCopy}
+              title={t('Copy model name')}
+              className='text-muted-foreground/50 hover:text-foreground hover:bg-muted -mr-1 ml-1 hidden rounded-none p-1 opacity-0 transition group-hover:opacity-100 sm:block'
+            >
+              <Copy className='size-3.5' />
+            </button>
           </div>
         </div>
 
-        <div className='flex shrink-0 items-center gap-1.5'>
-          <button
-            type='button'
-            onClick={props.onClick}
-            className='text-muted-foreground hover:text-foreground hover:bg-muted inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs transition-colors sm:px-2.5 sm:py-1.5'
-          >
-            {t('Details')}
-            <ChevronRight className='size-3.5' />
-          </button>
-          <button
-            type='button'
-            onClick={handleCopy}
-            className='text-muted-foreground hover:text-foreground hover:bg-muted rounded-md border p-1.5 transition-colors'
-            title={t('Copy')}
-          >
-            <Copy className='size-3.5' />
-          </button>
-        </div>
-      </div>
+        {/* Footer — mono instrument metadata, far edges anchored. */}
+        <div className='mt-3 flex items-center justify-between gap-3'>
+          <div className='nd-meta text-muted-foreground/70 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px]'>
+            {vendorName && (
+              <span className='truncate'>
+                {t('by')} {vendorName}
+              </span>
+            )}
+            {groups[0] && (
+              <>
+                <Dot />
+                <span className='truncate'>{groups[0]}</span>
+              </>
+            )}
+            <Dot />
+            <span>{isTokenBased ? t('Token-based') : t('Per Request')}</span>
+            {isDynamicPricing && (
+              <>
+                <Dot />
+                <span className='text-warning'>{t('Dynamic Pricing')}</span>
+              </>
+            )}
+          </div>
 
-      {/* Description */}
-      <p className='text-muted-foreground mt-2 line-clamp-1 flex-1 text-[13px] leading-relaxed sm:mt-4 sm:line-clamp-2 sm:min-h-[2.5rem]'>
-        {props.model.description || t('No description available.')}
-      </p>
-
-      {/* Footer: left metadata and right performance summary share row alignment */}
-      <div className='mt-2 grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-2 gap-y-1 sm:mt-4'>
-        <div className='flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1'>
-          {primaryGroup && (
-            <span className='text-muted-foreground text-xs font-medium'>
-              {primaryGroup} {t('Groups')}
+          <div className='flex shrink-0 items-center gap-2'>
+            <ModelPerfBadge perf={props.perf} />
+            <span className='nd-meta text-muted-foreground/40 hidden items-center gap-1 text-[11px] transition-colors group-hover:text-foreground sm:flex'>
+              {t('Details')}
+              <ArrowUpRight className='size-3' />
             </span>
-          )}
-          <span className='text-muted-foreground text-xs font-medium'>
-            {isTokenBased ? t('Token-based') : t('Per Request')}
-          </span>
-          {isDynamicPricing && (
-            <StatusBadge
-              label={t('Dynamic Pricing')}
-              variant='warning'
-              copyable={false}
-              size='sm'
-            />
-          )}
-        </div>
-        <ModelPerfBadge perf={props.perf} className='row-span-2 self-start' />
-
-        <div className='flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-0.5 sm:gap-x-3 sm:gap-y-1'>
-          {bottomTags.map((item) => (
-            <span key={item} className='text-muted-foreground/70 text-xs'>
-              {item}
-            </span>
-          ))}
-          <span className='text-muted-foreground/50 text-xs'>
-            {tokenUnitLabel}
-          </span>
-          {hiddenCount > 0 && (
-            <span className='text-muted-foreground/40 text-xs'>
-              +{hiddenCount}
-            </span>
-          )}
+          </div>
         </div>
       </div>
     </div>
   )
 })
+
+function Dot() {
+  return <span aria-hidden className='text-muted-foreground/30'>·</span>
+}
+
+function PriceLine(props: { label: string; value: string; unit?: string }) {
+  return (
+    <div className='flex items-baseline gap-1.5 whitespace-nowrap'>
+      <span className='nd-eyebrow text-[9px]'>{props.label}</span>
+      <span className='nd-meta text-foreground text-sm font-bold'>
+        {props.value}
+      </span>
+      {props.unit && (
+        <span className='nd-meta text-muted-foreground/50 text-[10px]'>
+          {props.unit}
+        </span>
+      )}
+    </div>
+  )
+}

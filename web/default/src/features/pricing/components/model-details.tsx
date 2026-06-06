@@ -272,6 +272,8 @@ function ModelHeader(props: { model: PricingModel }) {
   const modelIcon = modelIconKey
     ? getLobeIcon(modelIconKey, 20)
     : null
+  const hasAlias =
+    !!model.display_name && model.display_name !== model.model_name
   const description = model.description || model.vendor_description || null
   const tags = parseTags(model.tags)
   const isSpecialExpression =
@@ -283,18 +285,41 @@ function ModelHeader(props: { model: PricingModel }) {
     <header className='pb-4'>
       <div className='flex items-center gap-2.5'>
         {modelIcon}
-        <h1 className='font-mono text-xl font-bold tracking-tight sm:text-2xl'>
-          {model.model_name}
+        <h1
+          className={cn(
+            'text-xl font-bold tracking-tight sm:text-2xl',
+            !hasAlias && 'font-mono'
+          )}
+        >
+          {model.display_name || model.model_name}
         </h1>
-        <CopyButton
-          value={model.model_name || ''}
-          className='size-6'
-          iconClassName='size-3'
-          tooltip={t('Copy model name')}
-          successTooltip={t('Copied!')}
-          aria-label={t('Copy model name')}
-        />
+        {!hasAlias && (
+          <CopyButton
+            value={model.model_name || ''}
+            className='size-6'
+            iconClassName='size-3'
+            tooltip={t('Copy model name')}
+            successTooltip={t('Copied!')}
+            aria-label={t('Copy model name')}
+          />
+        )}
       </div>
+      {hasAlias && (
+        <div className='mt-2'>
+          <CopyButton
+            value={model.model_name || ''}
+            variant='outline'
+            size='sm'
+            className='text-muted-foreground h-6 gap-1.5 px-2 font-mono text-xs font-normal'
+            iconClassName='size-3'
+            tooltip={t('Copy model name')}
+            successTooltip={t('Copied!')}
+            aria-label={t('Copy model name')}
+          >
+            {model.model_name}
+          </CopyButton>
+        </div>
+      )}
       <div className='mt-1 flex flex-wrap items-center gap-1.5 text-xs'>
         {model.vendor_name && (
           <span className='text-muted-foreground'>{model.vendor_name}</span>
@@ -317,7 +342,7 @@ function ModelHeader(props: { model: PricingModel }) {
         )}
       </div>
       {description && (
-        <p className='text-muted-foreground mt-2 text-sm leading-relaxed'>
+        <p className='text-muted-foreground mt-2 text-sm leading-relaxed break-words [overflow-wrap:anywhere]'>
           {description}
         </p>
       )}
@@ -1013,7 +1038,9 @@ export function ModelDetailsDrawer(props: ModelDetailsDrawerProps) {
         )}
       >
         <SheetHeader className='sr-only'>
-          <SheetTitle>{props.model.model_name}</SheetTitle>
+          <SheetTitle>
+            {props.model.display_name || props.model.model_name}
+          </SheetTitle>
           <SheetDescription>{t('Model details')}</SheetDescription>
         </SheetHeader>
         <div className='flex-1 overflow-y-auto px-4 pt-11 pb-5 sm:px-6 sm:pt-12 sm:pb-6'>

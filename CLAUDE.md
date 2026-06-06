@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is an AI API gateway/proxy built with Go. It aggregates 40+ upstream AI providers (OpenAI, Claude, Gemini, Azure, AWS Bedrock, etc.) behind a unified API, with user management, billing, rate limiting, and an admin dashboard.
 
-This deployment ships under the display brand **Modplex** with a bespoke, "nothing-design" UI on the `default` theme: the home route `/` is a GSAP-driven scene-narrative landing (`web/default/src/features/home/landing/`), and the auth screens (sign-in/up/etc.) are restyled via a scoped token-remap. Design tokens live in `web/default/src/styles/nothing-landing.css` (`--nd-*`, scoped to `.modplex-landing` / `.modplex-auth` / `.nd-scope`). See **Branding & Attribution** below for what is/ isn't customizable.
+This deployment ships under the display brand **Modplex** with a bespoke, "nothing-design" UI on the `default` theme. Nothing-design surfaces so far: the home route `/` (a GSAP scene-narrative landing, `web/default/src/features/home/landing/`), the auth screens (sign-in/up/etc.), all modals/sheets/dialogs, the shared public header, and the pricing / Model Square page. Design tokens live in `web/default/src/styles/nothing-landing.css` (`--nd-*`). See **Nothing-design conventions** and **Branding & Attribution** below.
 
 ### Branding & Attribution (AGPL-3.0)
 
@@ -14,6 +14,20 @@ The project is licensed under AGPL-3.0 (see `LICENSE` and the per-file `Copyrigh
 
 - **Display name — customizable.** The user-facing product name and logo are deployment branding. Set them at runtime (Admin → Settings → `SystemName` / `Logo`); the baked fallbacks are `common/constants.go` (`SystemName`) and the `<title>`/meta in `web/{default,classic}/index.html`. This deployment uses **Modplex**.
 - **Copyright / license / attribution — preserved.** Do NOT remove or replace the AGPL license, the `Copyright (C) … QuantumNous` source-file headers, the upstream project credit, or the footer attribution linking to `github.com/QuantumNous/new-api`. AGPL requires these be kept intact regardless of display branding; renaming the product does not extend to stripping them.
+
+### Nothing-design conventions (`web/default`)
+
+How the monochrome "nothing-design" look is applied without forking every component:
+
+- **Token-remap scopes.** `nothing-landing.css` defines the `--nd-*` palette/fonts on scope classes and *remaps the app's theme tokens* (`--background`, `--foreground`, `--card`, `--muted`, `--border`, `--primary`, `--radius: 0`, …) to them inside `.modplex-auth`, `.modplex-pricing`, and `.nd-modal`. Wrapping a subtree in one of these classes restyles all child Tailwind utilities (`bg-muted`, `border`, `text-foreground`, …) to the nothing idiom automatically — prefer this over editing each component. `.nd-scope` injects only the `--nd-*` token *values* + body font/color (no app-token remap, no bg) — use it on portaled dropdown/popover surfaces and on chrome (e.g. the header `<nav>`) so `var(--nd-*)` resolves outside a scope.
+- **Helper classes:** `.nd-display` (Doto, hero numbers only), `.nd-label`/`.nd-eyebrow` (Space Mono, ALL CAPS labels), `.nd-mono`/`.nd-meta` (Space Mono, tabular figures for data). Brand mark is a red square (`bg-[#d71921]`, the one accent), matching `landing-header.tsx`.
+- **Shared header** (`components/layout/components/public-header.tsx`) is used by all public pages; it reuses the landing's self-contained controls (`LandingLangMenu`/`LandingThemeToggle`/`LandingNotifications`/`LandingProfile`) inside an `.nd-scope` nav, with mono nav links.
+- **Modal/sheet animations:** this Base UI build emits only `data-open`/`data-closed` (NOT `data-starting-style`/`data-ending-style`), so animate with `data-open:animate-in … data-closed:animate-out …` (tw-animate-css). For a sheet's *exit* animation to play, its caller must keep it mounted during close (drive `open` from state, keep the content model around) — don't conditionally unmount it on close.
+
+### Model display name & marketplace usage
+
+- **`DisplayName`** (`model_meta.go` `Model.DisplayName`, surfaced as `display_name` on `/api/pricing`): an optional friendly name shown in the Model Square; the API call contract is unchanged — `model_name` stays the identifier, and the card falls back to it when empty. Any new `Model` field MUST also be added to the `Select(...)` whitelist in `Model.Update()` or it won't persist.
+- **Default marketplace sort = site-wide usage.** `usePricingData` merges per-model `total_tokens` from `/api/rankings?period=all` (the rankings feature) into each model as `usage_tokens`; the pricing page defaults to the `usage` sort and shows the figure under the price (`features/pricing`).
 
 ## Tech Stack
 

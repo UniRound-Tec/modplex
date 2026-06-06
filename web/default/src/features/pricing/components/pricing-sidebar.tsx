@@ -16,12 +16,19 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-import type { ReactNode } from 'react'
-import { ChevronDown, RotateCcw } from 'lucide-react'
+import type { ComponentType, ReactNode } from 'react'
+import {
+  ChevronDown,
+  DollarSign,
+  Layers,
+  Plug,
+  RotateCcw,
+  Tag,
+  Building2,
+} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { getLobeIcon } from '@/lib/lobe-icon'
 import { cn } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Collapsible,
@@ -48,6 +55,7 @@ type FilterOption = {
 
 type FilterSectionProps = {
   title: string
+  icon: ComponentType<{ className?: string }>
   value: string
   options: FilterOption[]
   onChange: (value: string) => void
@@ -99,10 +107,10 @@ function FilterChip(props: {
       type='button'
       onClick={props.onClick}
       className={cn(
-        'group inline-flex max-w-full items-center gap-1.5 rounded-md border px-2 py-1 text-xs font-medium transition-all',
+        'group inline-flex max-w-full items-center gap-1.5 border px-2 py-1 text-xs font-medium transition-colors',
         props.active
-          ? 'border-foreground/30 bg-foreground/5 text-foreground shadow-sm'
-          : 'border-border/70 bg-background text-muted-foreground hover:border-border hover:bg-muted/50 hover:text-foreground'
+          ? 'border-foreground bg-foreground text-background'
+          : 'border-border bg-background text-muted-foreground hover:border-foreground/40 hover:text-foreground'
       )}
       title={props.option.label}
     >
@@ -113,10 +121,10 @@ function FilterChip(props: {
       {(props.option.suffix || props.option.count != null) && (
         <span
           className={cn(
-            'rounded-md px-1.5 py-0.5 text-[10px]',
+            'nd-meta px-1 py-0.5 text-[10px]',
             props.active
-              ? 'bg-background text-foreground'
-              : 'bg-muted text-muted-foreground'
+              ? 'bg-background/20 text-background'
+              : 'text-muted-foreground/60'
           )}
         >
           {props.option.suffix ?? props.option.count}
@@ -127,19 +135,23 @@ function FilterChip(props: {
 }
 
 function FilterSection(props: FilterSectionProps) {
+  const Icon = props.icon
   return (
     <Collapsible
       defaultOpen
-      className='border-border/70 border-b pb-3 last:border-b-0'
+      className='border-border border-b py-1 last:border-b-0'
     >
-      <CollapsibleTrigger className='group flex w-full items-center justify-between py-2.5 text-left'>
-        <span className='text-foreground text-sm font-semibold'>
-          {props.title}
+      <CollapsibleTrigger className='group flex w-full items-center justify-between gap-2 py-3 text-left'>
+        <span className='flex items-center gap-2.5'>
+          <Icon className='text-muted-foreground size-4 shrink-0' />
+          <span className='text-foreground text-sm font-medium'>
+            {props.title}
+          </span>
         </span>
-        <ChevronDown className='text-muted-foreground size-4 transition-transform group-data-[panel-open]:rotate-180' />
+        <ChevronDown className='text-muted-foreground/60 size-4 transition-transform group-data-[panel-open]:rotate-180' />
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className='flex flex-wrap gap-1.5'>
+        <div className='flex flex-wrap gap-1.5 pb-3 pl-[26px]'>
           {props.options.map((option) => (
             <FilterChip
               key={option.value}
@@ -244,13 +256,15 @@ export function PricingSidebar(props: PricingSidebarProps) {
   ]
 
   return (
-    <aside className={cn('rounded-xl border p-3', props.className)}>
-      <div className='mb-2.5 flex items-center justify-between gap-2'>
-        <div>
-          <h2 className='text-foreground text-sm font-bold'>{t('Filter')}</h2>
-          <p className='text-muted-foreground mt-1 text-xs'>
-            {t('Refine models by provider, group, type, and tags.')}
-          </p>
+    <aside className={cn(props.className)}>
+      <div className='border-border flex items-center justify-between gap-2 border-b pb-3'>
+        <div className='flex items-baseline gap-2'>
+          <h2 className='nd-eyebrow text-foreground text-[11px]'>
+            {t('Filter')}
+          </h2>
+          {props.hasActiveFilters && (
+            <span aria-hidden className='bg-accent size-1.5 rounded-full' />
+          )}
         </div>
         <Button
           type='button'
@@ -258,46 +272,45 @@ export function PricingSidebar(props: PricingSidebarProps) {
           size='sm'
           onClick={props.onClearFilters}
           disabled={!props.hasActiveFilters}
-          className='h-7 gap-1.5 px-2 text-xs'
+          className='nd-meta h-7 gap-1.5 px-2 text-[11px]'
         >
           <RotateCcw className='size-3.5' />
           {t('Reset')}
         </Button>
       </div>
 
-      {props.hasActiveFilters && (
-        <Badge variant='secondary' className='mb-3'>
-          {t('Filters active')}
-        </Badge>
-      )}
-
-      <div className='space-y-1'>
+      <div>
         <FilterSection
           title={t('Groups')}
+          icon={Layers}
           value={props.groupFilter}
           options={groupOptions}
           onChange={props.onGroupChange}
         />
         <FilterSection
           title={t('All Vendors')}
+          icon={Building2}
           value={props.vendorFilter}
           options={vendorOptions}
           onChange={props.onVendorChange}
         />
         <FilterSection
           title={t('Model Tags')}
+          icon={Tag}
           value={props.tagFilter}
           options={tagOptions}
           onChange={props.onTagChange}
         />
         <FilterSection
           title={t('Pricing Type')}
+          icon={DollarSign}
           value={props.quotaTypeFilter}
           options={quotaOptions}
           onChange={props.onQuotaTypeChange}
         />
         <FilterSection
           title={t('Endpoint Type')}
+          icon={Plug}
           value={props.endpointTypeFilter}
           options={endpointOptions}
           onChange={props.onEndpointTypeChange}
