@@ -19,7 +19,7 @@ For commercial licensing, please contact support@quantumnous.com
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
-import { ArrowRight, Flame, ShieldCheck, TrendingDown } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/stores/auth-store'
 import { getCurrencyLabel, isCurrencyDisplayEnabled } from '@/lib/currency'
@@ -234,24 +234,16 @@ export function SummaryCards() {
   })
 
   return (
-    <div className='bg-card overflow-hidden rounded-2xl border shadow-xs'>
-      <div className='grid xl:grid-cols-[minmax(0,1fr)_19rem]'>
-        <div className='flex flex-col gap-3 p-4 sm:p-5'>
-          <div className='flex flex-wrap items-start justify-between gap-3'>
-            <div className='flex flex-col gap-1'>
-              <h3 className='text-base font-semibold'>
-                {t('Usage at a glance')}
-              </h3>
-              <p className='text-muted-foreground text-sm'>
-                {t('Monitor balance, usage, and request volume')}
-              </p>
-            </div>
-          </div>
-          <StaggerContainer className='grid gap-3 md:grid-cols-3'>
-            {items.map((it) => (
+    <section className='bg-card overflow-hidden border'>
+      <div className='grid xl:grid-cols-[minmax(0,1fr)_21rem]'>
+        {/* Usage — secondary instrument row, divider-separated cells. */}
+        <div className='flex min-w-0 flex-col gap-5 p-5'>
+          <p className='nd-eyebrow text-[11px]'>{t('Usage at a glance')}</p>
+          <StaggerContainer className='divide-border grid gap-5 sm:grid-cols-3 sm:gap-0 sm:divide-x'>
+            {items.map((it, index) => (
               <StaggerItem
                 key={it.key}
-                className='bg-background/60 rounded-xl border p-3'
+                className={cn('min-w-0', index > 0 && 'sm:pl-5')}
               >
                 <StatCard
                   title={it.title}
@@ -268,57 +260,44 @@ export function SummaryCards() {
           </StaggerContainer>
         </div>
 
-        <div className='bg-warning/10 flex flex-col justify-between gap-4 border-t p-4 sm:p-5 xl:border-t-0 xl:border-l'>
-          <div className='flex flex-col gap-3'>
+        {/* Credit remaining — the one hero: a Doto balance, the single big
+            number on the screen. Sits on a raised surface, edge-anchored. */}
+        <div className='flex flex-col justify-between gap-6 border-t bg-[var(--nd-surface-raised)] p-5 xl:border-t-0 xl:border-l'>
+          <div className='flex flex-col gap-4'>
             <div className='flex items-center justify-between'>
-              <span className='text-muted-foreground text-xs font-medium'>
-                {t('Credit remaining')}
-              </span>
+              <p className='nd-eyebrow text-[11px]'>{t('Credit remaining')}</p>
               <span className='flex items-center gap-1.5'>
                 <span
-                  className={cn('size-1.5 rounded-full', healthCfg.dotClass)}
+                  className={cn('size-1.5', healthCfg.dotClass)}
                   aria-hidden='true'
                 />
-                <span className='text-muted-foreground text-[11px] font-medium'>
+                <span className='nd-label text-[10px]'>
                   {t(healthCfg.labelKey)}
                 </span>
               </span>
             </div>
 
-            <div className='font-mono text-2xl font-semibold tracking-tight'>
+            <div className='nd-display text-[2.75rem] leading-none break-all text-[var(--nd-text-display)]'>
               {formatQuota(remainQuota)}
             </div>
 
-            <div className='grid grid-cols-2 gap-2'>
-              <div className='bg-background/60 rounded-lg px-2.5 py-2'>
-                <div className='text-muted-foreground flex items-center gap-1 text-[11px] leading-none font-medium'>
-                  <Flame className='size-3 shrink-0' aria-hidden='true' />
-                  <span className='truncate'>{t('Last 24h usage')}</span>
-                </div>
-                <div className='text-foreground mt-1.5 truncate text-xs font-semibold tabular-nums'>
+            <div className='border-border grid grid-cols-2 border-t pt-4'>
+              <div className='min-w-0 pr-4'>
+                <p className='nd-label text-[10px]'>{t('Last 24h usage')}</p>
+                <p className='nd-meta text-foreground mt-1.5 truncate text-sm'>
                   {formatQuota(recentUsage)}
-                </div>
+                </p>
               </div>
-              <div className='bg-background/60 rounded-lg px-2.5 py-2'>
-                <div className='text-muted-foreground flex items-center gap-1 text-[11px] leading-none font-medium'>
-                  {runwayDays !== null && runwayDays < 3 ? (
-                    <TrendingDown
-                      className='size-3 shrink-0'
-                      aria-hidden='true'
-                    />
-                  ) : (
-                    <ShieldCheck
-                      className='size-3 shrink-0'
-                      aria-hidden='true'
-                    />
-                  )}
-                  <span className='truncate'>{t('Runway')}</span>
-                </div>
-                <div
+              <div className='border-border min-w-0 border-l pl-4'>
+                <p className='nd-label text-[10px]'>{t('Runway')}</p>
+                <p
                   className={cn(
-                    'mt-1.5 truncate text-xs font-semibold tabular-nums',
-                    healthLevel === 'critical' && 'text-destructive',
-                    healthLevel === 'caution' && 'text-warning'
+                    'nd-meta mt-1.5 truncate text-sm',
+                    healthLevel === 'critical'
+                      ? 'text-destructive'
+                      : healthLevel === 'caution'
+                        ? 'text-warning'
+                        : 'text-foreground'
                   )}
                 >
                   {runwayDays !== null
@@ -330,7 +309,7 @@ export function SummaryCards() {
                     : remainQuota <= 0
                       ? t('Balance depleted')
                       : t('No recent usage')}
-                </div>
+                </p>
               </div>
             </div>
           </div>
@@ -341,6 +320,6 @@ export function SummaryCards() {
           </Button>
         </div>
       </div>
-    </div>
+    </section>
   )
 }

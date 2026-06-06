@@ -47,7 +47,11 @@ export function AppSidebar() {
   const shouldReduce = useReducedMotion()
 
   return (
-    <Sidebar collapsible={collapsible} variant={variant}>
+    <Sidebar
+      collapsible={collapsible}
+      variant={variant}
+      className='modplex-console'
+    >
       {view && <SidebarViewHeader view={view} />}
 
       <SidebarContent className='py-2'>

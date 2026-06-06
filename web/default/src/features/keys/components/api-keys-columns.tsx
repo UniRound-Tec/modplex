@@ -41,10 +41,12 @@ import {
 } from './api-keys-cells'
 import { DataTableRowActions } from './data-table-row-actions'
 
+// Nothing-design: the bar is monochrome; red is reserved as the one interrupt,
+// shown only when the balance is critically low.
 function getQuotaProgressColor(percentage: number): string {
-  if (percentage <= 10) return '[&_[data-slot=progress-indicator]]:bg-rose-500'
-  if (percentage <= 30) return '[&_[data-slot=progress-indicator]]:bg-amber-500'
-  return '[&_[data-slot=progress-indicator]]:bg-emerald-500'
+  if (percentage <= 10)
+    return '[&_[data-slot=progress-indicator]]:bg-[var(--nd-accent)]'
+  return '[&_[data-slot=progress-indicator]]:bg-foreground'
 }
 
 function useGroupRatios(): Record<string, number> {

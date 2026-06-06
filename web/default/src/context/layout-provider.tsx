@@ -28,7 +28,11 @@ const LAYOUT_VARIANT_COOKIE_NAME = 'layout_variant'
 const LAYOUT_COOKIE_MAX_AGE = 60 * 60 * 24 * 7 // 7 days
 
 // Default values
-const DEFAULT_VARIANT = 'inset'
+// `sidebar` (not `inset`) so the console content is a flat, full-bleed,
+// square panel — the nothing-design idiom — instead of a rounded floating
+// card. The layout switcher was removed with the ConfigDrawer, so the variant
+// is locked to this default below (a stale `layout_variant` cookie is ignored).
+const DEFAULT_VARIANT = 'sidebar'
 const DEFAULT_COLLAPSIBLE = 'icon'
 
 type LayoutContextType = {
@@ -55,10 +59,9 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
     return (saved as Collapsible) || DEFAULT_COLLAPSIBLE
   })
 
-  const [variant, _setVariant] = useState<Variant>(() => {
-    const saved = getCookie(LAYOUT_VARIANT_COOKIE_NAME)
-    return (saved as Variant) || DEFAULT_VARIANT
-  })
+  // Variant is locked to the nothing-design default (the switcher is gone), so
+  // the stale `layout_variant` cookie is intentionally not read here.
+  const [variant, _setVariant] = useState<Variant>(DEFAULT_VARIANT)
 
   const setCollapsible = (newCollapsible: Collapsible) => {
     _setCollapsible(newCollapsible)

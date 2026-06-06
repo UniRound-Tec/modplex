@@ -74,6 +74,7 @@ export function ConsumptionDistributionChart(
   const timeGranularity = props.timeGranularity ?? DEFAULT_TIME_GRANULARITY
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (props.defaultChartType) setChartType(props.defaultChartType)
   }, [props.defaultChartType])
 
@@ -126,17 +127,22 @@ export function ConsumptionDistributionChart(
   ].join('-')
 
   return (
-    <div className='overflow-hidden rounded-lg border'>
-      <div className='flex w-full flex-col gap-1.5 border-b px-3 py-2 sm:gap-3 sm:px-5 sm:py-3 lg:flex-row lg:items-center lg:justify-between'>
+    <div className='overflow-hidden border'>
+      <div className='flex w-full flex-col gap-1.5 border-b px-3 py-2.5 sm:gap-3 sm:px-5 sm:py-3 lg:flex-row lg:items-center lg:justify-between'>
         <div className='flex items-center gap-2'>
-          <WalletCards className='text-muted-foreground/60 size-4' />
-          <div className='text-sm font-semibold'>{t('Quota Distribution')}</div>
-          <span className='text-muted-foreground text-xs'>
+          <WalletCards
+            className='size-3.5 shrink-0 opacity-60'
+            strokeWidth={1.5}
+          />
+          <span className='nd-label text-[11px] text-[var(--nd-text-primary)]!'>
+            {t('Quota Distribution')}
+          </span>
+          <span className='nd-meta text-muted-foreground text-xs'>
             {t('Total:')} {chartData.totalQuotaDisplay}
           </span>
         </div>
 
-        <div className='bg-muted/60 inline-flex h-7 w-full overflow-x-auto rounded-lg border p-0.5 sm:h-8 sm:w-auto'>
+        <div className='border-border inline-flex h-8 w-full overflow-x-auto border p-0.5 sm:w-auto'>
           {CONSUMPTION_DISTRIBUTION_CHART_OPTIONS.map((item) => {
             const Icon = CHART_TYPE_ICONS[item.value]
             return (
@@ -144,13 +150,13 @@ export function ConsumptionDistributionChart(
                 key={item.value}
                 type='button'
                 onClick={() => setChartType(item.value)}
-                className={`inline-flex shrink-0 items-center gap-1.5 rounded-md px-3 text-xs font-medium transition-colors ${
+                className={`nd-mono inline-flex shrink-0 items-center gap-1.5 px-3 text-[11px] tracking-wider uppercase transition-colors ${
                   chartType === item.value
-                    ? 'bg-background text-foreground shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? 'bg-[var(--nd-text-display)] text-[var(--nd-bg)]'
+                    : 'text-[var(--nd-text-secondary)] hover:text-[var(--nd-text-display)]'
                 }`}
               >
-                <Icon className='size-3.5' />
+                <Icon className='size-3.5' strokeWidth={1.5} />
                 {t(item.labelKey)}
               </button>
             )

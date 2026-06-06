@@ -36,6 +36,7 @@ For commercial licensing, please contact support@quantumnous.com
  * the dark overrides resolve there too. */
 .modplex-landing,
 .modplex-auth,
+.modplex-console,
 .nd-modal,
 .nd-scope {
   /* Grayscale canvas — Light Mode ("printed technical manual") */
@@ -65,6 +66,7 @@ For commercial licensing, please contact support@quantumnous.com
 
 .dark .modplex-landing,
 .dark .modplex-auth,
+.dark .modplex-console,
 .dark .nd-modal,
 .dark .nd-scope {
   /* Grayscale canvas — Dark Mode ("instrument panel in a dark room", OLED) */
@@ -187,6 +189,7 @@ For commercial licensing, please contact support@quantumnous.com
  * ────────────────────────────────────────────────────────────────────── */
 .modplex-auth,
 .modplex-pricing,
+.modplex-console,
 .nd-modal {
   --radius: 0px;
 
@@ -209,6 +212,18 @@ For commercial licensing, please contact support@quantumnous.com
   --border: var(--nd-border-visible);
   --input: var(--nd-border-visible);
   --ring: var(--nd-text-display);
+
+  /* Sidebar tokens remapped to the monochrome palette so the console
+   * chrome (`.modplex-console`) and the mobile sidebar sheet (`.nd-modal`)
+   * render in the Nothing idiom. Harmless in scopes without a sidebar. */
+  --sidebar: var(--nd-bg);
+  --sidebar-foreground: var(--nd-text-primary);
+  --sidebar-primary: var(--nd-text-display);
+  --sidebar-primary-foreground: var(--nd-bg);
+  --sidebar-accent: var(--nd-surface-raised);
+  --sidebar-accent-foreground: var(--nd-text-display);
+  --sidebar-border: var(--nd-border);
+  --sidebar-ring: var(--nd-text-display);
 
   /* Red is the one signal — keep it for validation/destructive only. */
   --destructive: var(--nd-accent);
@@ -290,6 +305,35 @@ For commercial licensing, please contact support@quantumnous.com
   text-transform: uppercase;
   letter-spacing: 0.18em;
   color: var(--nd-text-secondary);
+}
+
+/* Data tables inside the console scope get the instrument voice: Space Mono,
+ * ALL CAPS, recessed column headers. Scoped to `.modplex-console` so it never
+ * touches tables on pages that aren't part of the nothing console. */
+.modplex-console [data-slot='table-head'] {
+  font-family: var(--nd-font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nd-text-secondary);
+}
+
+.modplex-console [data-slot='table-head'] button {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+}
+
+/* Cards in the console scope: flat (no shadow), crisp border separation.
+ * The shadcn Card uses a `ring-1` (a box-shadow ring) for its edge — killing
+ * box-shadow would remove that, so we replace it with a real 1px border. */
+.modplex-console [data-slot='card'] {
+  box-shadow: none;
+  border: 1px solid var(--nd-border-visible);
 }
 
 /* ── Auth left-panel motion system ──────────────────────────────────────

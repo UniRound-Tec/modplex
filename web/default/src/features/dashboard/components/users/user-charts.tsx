@@ -224,13 +224,15 @@ export function UserCharts() {
           const spec = chartData[chart.specKey]
 
           return (
-            <div
-              key={chart.value}
-              className='overflow-hidden rounded-lg border'
-            >
-              <div className='flex w-full items-center gap-2 border-b px-3 py-2 sm:px-5 sm:py-3'>
-                <Users className='text-muted-foreground/60 size-4' />
-                <div className='text-sm font-semibold'>{t(chart.labelKey)}</div>
+            <div key={chart.value} className='overflow-hidden border'>
+              <div className='flex w-full items-center gap-2 border-b px-3 py-2.5 sm:px-5 sm:py-3'>
+                <Users
+                  className='size-3.5 shrink-0 opacity-60'
+                  strokeWidth={1.5}
+                />
+                <span className='nd-label text-[11px] text-[var(--nd-text-primary)]!'>
+                  {t(chart.labelKey)}
+                </span>
               </div>
 
               <div className='h-[300px] p-1.5 sm:h-96 sm:p-2'>

@@ -113,22 +113,23 @@ export function PerformanceOverview() {
 
   if (!loading && !hasData) {
     return (
-      <div className='text-muted-foreground overflow-hidden rounded-lg border px-4 py-3 text-center text-xs'>
+      <div className='text-muted-foreground overflow-hidden border px-4 py-3 text-center text-xs'>
         {t('No performance data available')}
       </div>
     )
   }
 
   return (
-    <div className='overflow-hidden rounded-lg border'>
+    <div className='overflow-hidden border'>
       <div className='flex flex-wrap items-center gap-x-5 gap-y-2.5 px-4 py-2.5 sm:px-5 sm:py-3'>
         {/* Title */}
         <div className='flex items-center gap-1.5'>
           <HeartPulse
-            className='text-muted-foreground/60 size-3.5 shrink-0'
+            className='size-3.5 shrink-0 opacity-60'
+            strokeWidth={1.5}
             aria-hidden='true'
           />
-          <span className='text-xs font-semibold whitespace-nowrap'>
+          <span className='nd-label text-[11px] whitespace-nowrap text-[var(--nd-text-primary)]!'>
             {t('Performance health')}
           </span>
         </div>
@@ -193,17 +194,9 @@ function InlineMetric(props: {
 
   return (
     <div className='flex items-center gap-1.5'>
-      <Icon
-        className='text-muted-foreground/50 size-3 shrink-0'
-        aria-hidden='true'
-      />
-      <span className='text-muted-foreground text-[11px]'>{props.label}</span>
-      <span
-        className={cn(
-          'font-mono text-xs font-semibold tabular-nums',
-          props.valueClassName
-        )}
-      >
+      <Icon className='size-3 shrink-0 opacity-50' aria-hidden='true' />
+      <span className='nd-label text-[10px]'>{props.label}</span>
+      <span className={cn('nd-meta text-foreground text-xs', props.valueClassName)}>
         {props.value}
       </span>
     </div>
@@ -214,20 +207,17 @@ function ModelBadge(props: { model: PerfModelSummary }) {
   const model = props.model
 
   return (
-    <span className='bg-muted/50 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1'>
-      <span className='max-w-[10rem] truncate font-mono text-[11px]'>
+    <span className='border-border inline-flex items-center gap-1.5 border px-2.5 py-1'>
+      <span className='nd-meta max-w-[10rem] truncate text-[11px]'>
         {model.model_name}
       </span>
       <span
-        className={cn(
-          'size-1.5 rounded-full',
-          successDotClassName(model.success_rate)
-        )}
+        className={cn('size-1.5', successDotClassName(model.success_rate))}
         aria-hidden='true'
       />
       <span
         className={cn(
-          'font-mono text-[11px] font-semibold tabular-nums',
+          'nd-meta text-[11px]',
           successRateClassName(model.success_rate)
         )}
       >

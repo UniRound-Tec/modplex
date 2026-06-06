@@ -102,13 +102,16 @@ export function PerformanceHealthPanel() {
   const hasData = models.length > 0
 
   return (
-    <section className='bg-card h-full overflow-hidden rounded-2xl border shadow-xs'>
+    <section className='bg-card h-full overflow-hidden border'>
       <div className='flex items-center gap-2 border-b px-4 py-3 sm:px-5'>
         <HeartPulse
-          className='text-muted-foreground/60 size-4 shrink-0'
+          className='size-3.5 shrink-0 opacity-60'
+          strokeWidth={1.5}
           aria-hidden='true'
         />
-        <h3 className='text-sm font-semibold'>{t('Performance health')}</h3>
+        <h3 className='nd-label text-[11px] text-[var(--nd-text-primary)]!'>
+          {t('Performance health')}
+        </h3>
         <span className='text-muted-foreground ml-auto text-xs'>
           {t('Performance metrics for the last 24 hours')}
         </span>
@@ -146,7 +149,7 @@ export function PerformanceHealthPanel() {
         ) : (
           hasData && (
             <div>
-              <span className='text-muted-foreground mb-1 block text-[11px] font-medium'>
+              <span className='nd-label mb-2 block text-[10px]'>
                 {t('Top models by traffic')}
               </span>
               <div className='grid grid-cols-1 gap-x-4 sm:grid-cols-2'>
@@ -195,19 +198,16 @@ function MetricCell(props: {
 }) {
   const Icon = props.icon
   return (
-    <div className='bg-muted/40 rounded-xl px-3 py-2.5'>
-      <div className='text-muted-foreground flex items-center gap-1.5 text-[11px] font-medium'>
-        <Icon className='size-3 shrink-0' aria-hidden='true' />
+    <div className='border-border border px-3 py-2.5'>
+      <div className='nd-label flex items-center gap-1.5 text-[10px]'>
+        <Icon className='size-3 shrink-0 opacity-60' aria-hidden='true' />
         <span className='truncate'>{props.label}</span>
       </div>
       {props.loading ? (
-        <Skeleton className='mt-1.5 h-5 w-16' />
+        <Skeleton className='mt-2 h-5 w-16' />
       ) : (
         <div
-          className={cn(
-            'mt-1.5 font-mono text-sm font-semibold tabular-nums',
-            props.valueClassName
-          )}
+          className={cn('nd-meta mt-2 text-base', props.valueClassName)}
         >
           {props.value}
         </div>

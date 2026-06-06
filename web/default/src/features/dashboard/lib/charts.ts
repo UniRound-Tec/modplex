@@ -296,7 +296,7 @@ export function processChartData(
   )
   const otherColor = modelColorRange[modelColorDomain.indexOf(otherLabel)]
   const otherTooltipColor =
-    typeof otherColor === 'string' ? otherColor : '#FF8A00'
+    typeof otherColor === 'string' ? otherColor : '#808080'
   const modelColor = {
     type: 'ordinal',
     domain: modelColorDomain,
@@ -719,17 +719,19 @@ export function processChartData(
   }
 }
 
+// Nothing-design: monochrome series ramp (used only if the themed
+// `--chart-*` variables are unavailable). Differentiate by lightness, not hue.
 const USER_COLOR_FALLBACKS = [
-  '#5B8FF9',
-  '#5AD8A6',
-  '#F6BD16',
-  '#E8684A',
-  '#6DC8EC',
-  '#9270CA',
-  '#FF9D4D',
-  '#269A99',
-  '#FF99C3',
-  '#5D7092',
+  '#404040',
+  '#737373',
+  '#a6a6a6',
+  '#595959',
+  '#8c8c8c',
+  '#bfbfbf',
+  '#4d4d4d',
+  '#808080',
+  '#999999',
+  '#666666',
 ]
 
 export function processUserChartData(

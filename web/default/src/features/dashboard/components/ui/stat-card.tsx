@@ -50,16 +50,17 @@ interface StatCardProps {
   action?: ReactNode
 }
 
+// Nothing-design: data viz is monochrome — differentiate by opacity, not hue.
 const TONE_CLASSES: Record<StatCardTone, string> = {
-  rose: 'from-rose-500/80 via-rose-300/70 to-rose-200/20 dark:from-rose-400/70 dark:via-rose-500/30 dark:to-rose-500/5',
-  teal: 'from-teal-500/80 via-teal-300/70 to-teal-200/20 dark:from-teal-400/70 dark:via-teal-500/30 dark:to-teal-500/5',
-  gray: 'from-muted-foreground/50 via-muted-foreground/20 to-transparent dark:from-muted-foreground/40 dark:via-muted-foreground/20',
+  rose: 'from-foreground/35 to-transparent',
+  teal: 'from-foreground/35 to-transparent',
+  gray: 'from-foreground/25 to-transparent',
 }
 
 const LINE_TONE_CLASSES: Record<StatCardTone, string> = {
-  rose: 'text-warning',
-  teal: 'text-primary',
-  gray: 'text-muted-foreground',
+  rose: 'text-foreground/70',
+  teal: 'text-foreground/70',
+  gray: 'text-foreground/55',
 }
 
 const DETAIL_TONE_CLASSES: Record<StatCardDetailTone, string> = {
@@ -210,9 +211,10 @@ export function StatCard(props: StatCardProps) {
   return (
     <div className='group flex min-h-32 flex-col justify-between gap-3'>
       <div className='flex items-start justify-between gap-1'>
-        <div className='text-muted-foreground flex items-center gap-1.5 text-xs font-medium sm:gap-2'>
+        <div className='nd-label flex items-center gap-1.5 text-[10px]'>
           <Icon
-            className='text-muted-foreground/60 size-3.5 shrink-0'
+            className='size-3.5 shrink-0 opacity-60'
+            strokeWidth={1.5}
             aria-hidden='true'
           />
           <span className='line-clamp-2 leading-snug'>{props.title}</span>
@@ -236,10 +238,10 @@ export function StatCard(props: StatCardProps) {
         </div>
       ) : (
         <div className='flex flex-col gap-1'>
-          <div className='text-foreground font-mono text-2xl font-semibold tracking-tight break-all tabular-nums'>
+          <div className='nd-meta text-foreground text-2xl tracking-tight break-all'>
             {props.value}
           </div>
-          <p className='text-muted-foreground/60 text-xs leading-relaxed'>
+          <p className='text-muted-foreground/70 text-[11px] leading-relaxed'>
             {props.description}
           </p>
         </div>
