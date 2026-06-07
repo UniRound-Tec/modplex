@@ -78,12 +78,18 @@ export function useTopNavLinks(): TopNavLink[] {
     links.push({ title: t('Model Square'), href: '/pricing', requiresAuth })
   }
 
-  // Rankings
-  const rankings = modules?.rankings
-  if (rankings && typeof rankings === 'object' && rankings.enabled) {
-    const requiresAuth = rankings.requireAuth && !isAuthed
-    links.push({ title: t('Rankings'), href: '/rankings', requiresAuth })
-  }
+  // Rankings — the nav entry is intentionally hidden for this deployment.
+  // Do NOT re-enable by disabling the `rankings` HeaderNavModule instead: that
+  // setting also gates the /api/rankings endpoint (api-router.go), which the
+  // Model Square's default usage sort depends on (use-pricing-data.ts merges
+  // total_tokens from useRankings('all')). Keep the module enabled, just don't
+  // render the link.
+  //
+  // const rankings = modules?.rankings
+  // if (rankings && typeof rankings === 'object' && rankings.enabled) {
+  //   const requiresAuth = rankings.requireAuth && !isAuthed
+  //   links.push({ title: t('Rankings'), href: '/rankings', requiresAuth })
+  // }
 
   // Docs (supports external links)
   if (modules?.docs !== false) {
