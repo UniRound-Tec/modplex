@@ -17,6 +17,23 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
+/* CJK display face — 字体管家波点 (AaSpot), a dot-matrix Chinese font that
+ * matches the nothing-design dot motif. Subset at build time to just the
+ * glyphs the UI renders (scripts/subset-cjk-font.mjs → ~180 KB woff2). It is
+ * appended *after* the Latin faces in every `--nd-font-*` stack, so Latin/
+ * digits keep Space Mono / Space Grotesk and only Chinese falls through to
+ * this face. */
+@font-face {
+  font-family: 'AaSpot';
+  src: url('../assets/fonts/aaspot-cjk.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  /* Restrict to CJK + CJK punctuation so the browser never reaches for this
+   * face to paint Latin glyphs (it only backs Chinese here). */
+  unicode-range: U+2010-203B, U+2E80-9FFF, U+3000-303F, U+FF00-FFEF;
+}
+
 /* ──────────────────────────────────────────────────────────────────────
  * Nothing-design landing system — scoped tokens
  *
@@ -57,11 +74,11 @@ For commercial licensing, please contact support@quantumnous.com
   --nd-success: #4a9e5c;
   --nd-warning: #d4a843;
 
-  /* Typefaces */
-  --nd-font-display: 'Doto Variable', 'Space Mono', monospace;
+  /* Typefaces — 'AaSpot' backs CJK only (see @font-face unicode-range). */
+  --nd-font-display: 'Doto Variable', 'AaSpot', 'Space Mono', monospace;
   --nd-font-body:
-    'Space Grotesk Variable', 'DM Sans', system-ui, sans-serif;
-  --nd-font-mono: 'Space Mono', 'JetBrains Mono', 'SF Mono', monospace;
+    'Space Grotesk Variable', 'AaSpot', 'DM Sans', system-ui, sans-serif;
+  --nd-font-mono: 'Space Mono', 'AaSpot', 'JetBrains Mono', 'SF Mono', monospace;
 }
 
 .dark .modplex-landing,

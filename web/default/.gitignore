@@ -25,3 +25,5 @@ dist-ssr
 *.sln
 *.sw?
 .tanstack/*
+# Generated CJK font subset (rebuilt by scripts/subset-cjk-font.mjs on dev/build)
+src/assets/fonts/aaspot-cjk.woff2

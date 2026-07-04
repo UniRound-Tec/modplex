@@ -4,9 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "rsbuild dev",
-    "build": "rsbuild build",
-    "build:check": "tsc -b && rsbuild build",
+    "dev": "node scripts/subset-cjk-font.mjs && rsbuild dev",
+    "build": "node scripts/subset-cjk-font.mjs && rsbuild build",
+    "build:check": "tsc -b && node scripts/subset-cjk-font.mjs && rsbuild build",
+    "font:subset": "node scripts/subset-cjk-font.mjs",
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "preview": "rsbuild preview",
@@ -100,6 +101,7 @@
     "prettier": "catalog:",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "shadcn": "^4.8.0",
+    "subset-font": "^2.5.0",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.59.4"
   },
