@@ -216,7 +216,7 @@ export function PublicHeader(props: PublicHeaderProps) {
                   'nd-label flex h-9 items-center px-3 transition-colors duration-200',
                   isActive
                     ? 'text-[var(--nd-text-display)]'
-                    : 'text-[var(--nd-text-secondary)] hover:text-[var(--nd-text-display)]',
+                    : 'text-[var(--nd-text-primary)] hover:text-[var(--nd-text-display)]',
                   link.disabled && 'pointer-events-none opacity-50'
                 )
                 if (link.external) {

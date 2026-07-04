@@ -97,7 +97,10 @@ const Toaster = (props: ToasterProps) => {
           '--error-border':
             'color-mix(in oklch, var(--destructive) 35%, var(--border))',
           '--error-text': 'var(--destructive)',
-          '--border-radius': 'var(--radius)',
+          // Toasts render in a body-level portal, outside every nd scope, so
+          // `var(--radius)` would resolve to the global 1rem pill. Pin flat to
+          // match the nothing-design idiom.
+          '--border-radius': '0px',
         } as React.CSSProperties
       }
       {...props}
