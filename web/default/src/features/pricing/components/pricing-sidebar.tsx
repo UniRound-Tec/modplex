@@ -17,15 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import type { ComponentType, ReactNode } from 'react'
-import {
-  ChevronDown,
-  DollarSign,
-  Layers,
-  Plug,
-  RotateCcw,
-  Tag,
-  Building2,
-} from 'lucide-react'
+import { ChevronDown, Layers, RotateCcw, Tag, Building2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { getLobeIcon } from '@/lib/lobe-icon'
 import { cn } from '@/lib/utils'
@@ -35,13 +27,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
-import {
-  ENDPOINT_TYPES,
-  FILTER_ALL,
-  QUOTA_TYPES,
-  getEndpointTypeLabels,
-  getQuotaTypeLabels,
-} from '../constants'
+import { FILTER_ALL } from '../constants'
 import { parseTags } from '../lib/filters'
 import type { PricingModel, PricingVendor } from '../types'
 
@@ -62,13 +48,9 @@ type FilterSectionProps = {
 }
 
 export interface PricingSidebarProps {
-  quotaTypeFilter: string
-  endpointTypeFilter: string
   vendorFilter: string
   groupFilter: string
   tagFilter: string
-  onQuotaTypeChange: (value: string) => void
-  onEndpointTypeChange: (value: string) => void
   onVendorChange: (value: string) => void
   onGroupChange: (value: string) => void
   onTagChange: (value: string) => void
@@ -97,7 +79,8 @@ function formatGroupRatio(ratio: number | undefined): string | undefined {
   return `x${formatted}`
 }
 
-function FilterChip(props: {
+/** One filter option per row — full-width list, not a wrapped chip cloud. */
+function FilterRow(props: {
   option: FilterOption
   active: boolean
   onClick: () => void
@@ -107,24 +90,24 @@ function FilterChip(props: {
       type='button'
       onClick={props.onClick}
       className={cn(
-        'group inline-flex max-w-full items-center gap-1.5 border px-2 py-1 text-xs font-medium transition-colors',
+        'group flex w-full items-center justify-between gap-2 border px-2 py-1.5 text-xs font-medium transition-colors',
         props.active
           ? 'border-foreground bg-foreground text-background'
-          : 'border-border bg-background text-muted-foreground hover:border-foreground/40 hover:text-foreground'
+          : 'text-muted-foreground hover:border-foreground/40 hover:text-foreground border-transparent'
       )}
       title={props.option.label}
     >
-      {props.option.icon && (
-        <span className='shrink-0'>{props.option.icon}</span>
-      )}
-      <span className='truncate'>{props.option.label}</span>
+      <span className='flex min-w-0 items-center gap-1.5'>
+        {props.option.icon && (
+          <span className='shrink-0'>{props.option.icon}</span>
+        )}
+        <span className='truncate'>{props.option.label}</span>
+      </span>
       {(props.option.suffix || props.option.count != null) && (
         <span
           className={cn(
-            'nd-meta px-1 py-0.5 text-[10px]',
-            props.active
-              ? 'bg-background/20 text-background'
-              : 'text-muted-foreground/60'
+            'nd-meta shrink-0 text-[10px]',
+            props.active ? 'text-background/70' : 'text-muted-foreground/60'
           )}
         >
           {props.option.suffix ?? props.option.count}
@@ -150,10 +133,10 @@ function FilterSection(props: FilterSectionProps) {
         </span>
         <ChevronDown className='text-muted-foreground/60 size-4 transition-transform group-data-[panel-open]:rotate-180' />
       </CollapsibleTrigger>
-      <CollapsibleContent>
-        <div className='flex flex-wrap gap-1.5 pb-3 pl-[26px]'>
+      <CollapsibleContent className='CollapsibleContent'>
+        <div className='flex flex-col gap-0.5 pb-3'>
           {props.options.map((option) => (
-            <FilterChip
+            <FilterRow
               key={option.value}
               option={option}
               active={props.value === option.value}
@@ -168,8 +151,6 @@ function FilterSection(props: FilterSectionProps) {
 
 export function PricingSidebar(props: PricingSidebarProps) {
   const { t } = useTranslation()
-  const quotaTypeLabels = getQuotaTypeLabels(t)
-  const endpointTypeLabels = getEndpointTypeLabels(t)
 
   const vendorOptions: FilterOption[] = [
     {
@@ -202,24 +183,6 @@ export function PricingSidebar(props: PricingSidebarProps) {
     })),
   ]
 
-  const quotaOptions: FilterOption[] = [
-    {
-      value: QUOTA_TYPES.ALL,
-      label: quotaTypeLabels[QUOTA_TYPES.ALL],
-      count: props.models.length,
-    },
-    {
-      value: QUOTA_TYPES.TOKEN,
-      label: quotaTypeLabels[QUOTA_TYPES.TOKEN],
-      count: countBy(props.models, (model) => model.quota_type === 0),
-    },
-    {
-      value: QUOTA_TYPES.REQUEST,
-      label: quotaTypeLabels[QUOTA_TYPES.REQUEST],
-      count: countBy(props.models, (model) => model.quota_type === 1),
-    },
-  ]
-
   const tagOptions: FilterOption[] = [
     {
       value: FILTER_ALL,
@@ -235,24 +198,6 @@ export function PricingSidebar(props: PricingSidebarProps) {
           .includes(tag.toLowerCase())
       ),
     })),
-  ]
-
-  const endpointOptions: FilterOption[] = [
-    {
-      value: ENDPOINT_TYPES.ALL,
-      label: endpointTypeLabels[ENDPOINT_TYPES.ALL],
-      count: props.models.length,
-    },
-    ...Object.entries(endpointTypeLabels)
-      .filter(([value]) => value !== ENDPOINT_TYPES.ALL)
-      .map(([value, label]) => ({
-        value,
-        label,
-        count: countBy(
-          props.models,
-          (model) => model.supported_endpoint_types?.includes(value) ?? false
-        ),
-      })),
   ]
 
   return (
@@ -300,20 +245,6 @@ export function PricingSidebar(props: PricingSidebarProps) {
           value={props.tagFilter}
           options={tagOptions}
           onChange={props.onTagChange}
-        />
-        <FilterSection
-          title={t('Pricing Type')}
-          icon={DollarSign}
-          value={props.quotaTypeFilter}
-          options={quotaOptions}
-          onChange={props.onQuotaTypeChange}
-        />
-        <FilterSection
-          title={t('Endpoint Type')}
-          icon={Plug}
-          value={props.endpointTypeFilter}
-          options={endpointOptions}
-          onChange={props.onEndpointTypeChange}
         />
       </div>
     </aside>

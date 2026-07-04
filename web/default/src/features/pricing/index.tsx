@@ -215,15 +215,11 @@ export function Pricing() {
             />
           </header>
 
-          <div className='grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)] xl:gap-8'>
+          <div className='grid gap-6 xl:grid-cols-[180px_minmax(0,1fr)] xl:gap-8'>
             <PricingSidebar
-              quotaTypeFilter={quotaTypeFilter}
-              endpointTypeFilter={endpointTypeFilter}
               vendorFilter={vendorFilter}
               groupFilter={groupFilter}
               tagFilter={tagFilter}
-              onQuotaTypeChange={setQuotaTypeFilter}
-              onEndpointTypeChange={setEndpointTypeFilter}
               onVendorChange={setVendorFilter}
               onGroupChange={setGroupFilter}
               onTagChange={setTagFilter}
