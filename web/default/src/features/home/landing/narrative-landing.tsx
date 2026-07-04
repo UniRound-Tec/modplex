@@ -17,6 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { useEffect } from 'react'
+import { NothingBackground } from '@/components/nothing-background'
 import { LandingHeader } from './landing-header'
 import { SceneProgress } from './scene-progress'
 import { SceneFlow } from './scenes/scene-flow'
@@ -49,20 +50,26 @@ export function NarrativeLanding({ isAuthenticated }: NarrativeLandingProps) {
     const { body, documentElement: html } = document
     const prevBody = body.style.overflow
     const prevHtml = html.style.overflow
+    const prevBodyOverscroll = body.style.overscrollBehavior
+    const prevHtmlOverscroll = html.style.overscrollBehavior
     body.style.overflow = 'hidden'
     html.style.overflow = 'hidden'
+    // Prevent the browser's pull-to-refresh / overscroll bounce on downswipe.
+    body.style.overscrollBehavior = 'none'
+    html.style.overscrollBehavior = 'none'
     return () => {
       body.style.overflow = prevBody
       html.style.overflow = prevHtml
+      body.style.overscrollBehavior = prevBodyOverscroll
+      html.style.overscrollBehavior = prevHtmlOverscroll
     }
   }, [])
 
   return (
     <div className='modplex-landing relative h-[100svh] w-full overflow-hidden select-none'>
-      {/* Dot-matrix wash, masked to the upper-right negative space. */}
-      <div
-        aria-hidden
-        className='nd-dot-grid-subtle pointer-events-none absolute inset-0 opacity-70 [mask-image:radial-gradient(ellipse_75%_55%_at_72%_28%,black,transparent)]'
+      {/* Animated dot-matrix terminal wash, masked to the upper-right space. */}
+      <NothingBackground
+        className='absolute inset-0 [mask-image:radial-gradient(ellipse_90%_70%_at_60%_35%,black,transparent)]'
       />
 
       <LandingHeader />

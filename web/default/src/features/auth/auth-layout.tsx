@@ -18,6 +18,7 @@ For commercial licensing, please contact support@quantumnous.com
 */
 import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
+import { NothingBackground } from '@/components/nothing-background'
 
 type AuthLayoutProps = {
   children: React.ReactNode
@@ -39,11 +40,8 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         {/* Brand context — the one Doto moment, confidently empty. Hidden on
             narrow screens where the form takes the whole canvas. */}
         <aside className='relative hidden flex-col justify-between overflow-hidden border-r border-[var(--nd-border-visible)] p-12 lg:flex xl:p-16'>
-          {/* Dot grid — subtle static texture */}
-          <div
-            aria-hidden
-            className='nd-dot-grid-subtle pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black,transparent)]'
-          />
+          {/* Animated dot-matrix terminal — decorative, brand panel only. */}
+          <NothingBackground className='absolute inset-0 [mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black,transparent)]' />
 
           {/* Glyph — animated concentric arcs, Nothing Phone inspired */}
           <div

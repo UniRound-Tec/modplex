@@ -162,9 +162,9 @@ export function Pricing() {
 
   if (isLoading) {
     return (
-      <PublicLayout showMainContainer={false}>
-        <div className='modplex-pricing nd-scope min-h-svh'>
-          <div className='mx-auto w-full max-w-7xl px-6 pt-16 pb-8 md:px-8 sm:pt-20 sm:pb-10'>
+      <PublicLayout showMainContainer={false} bgIntensity={2.2}>
+        <div className='modplex-pricing nd-scope min-h-svh bg-transparent!'>
+          <div className='mx-auto min-h-svh w-full max-w-7xl border-x border-[var(--nd-border)] bg-[color-mix(in_srgb,var(--nd-bg)_38%,transparent)] px-6 pt-16 pb-8 backdrop-blur-md md:px-8 sm:pt-20 sm:pb-10'>
             <LoadingSkeleton viewMode={viewMode} />
           </div>
         </div>
@@ -173,9 +173,9 @@ export function Pricing() {
   }
 
   return (
-    <PublicLayout showMainContainer={false}>
-      <div className='modplex-pricing nd-scope min-h-svh'>
-        <PageTransition className='relative mx-auto w-full max-w-7xl px-6 pt-14 pb-10 md:px-8 sm:pt-16 sm:pb-14'>
+    <PublicLayout showMainContainer={false} bgIntensity={2.2}>
+      <div className='modplex-pricing nd-scope min-h-svh bg-transparent!'>
+        <PageTransition className='relative mx-auto min-h-svh w-full max-w-7xl border-x border-[var(--nd-border)] bg-[color-mix(in_srgb,var(--nd-bg)_38%,transparent)] px-6 pt-14 pb-10 backdrop-blur-md md:px-8 sm:pt-16 sm:pb-14'>
           {/* Header — asymmetric: identity left, the one hero number right. */}
           <header className='border-border mb-6 border-b pb-6 sm:mb-8 sm:pb-8'>
             <div className='flex flex-wrap items-end justify-between gap-x-8 gap-y-4'>
