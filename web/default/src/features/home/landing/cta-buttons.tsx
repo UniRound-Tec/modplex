@@ -18,7 +18,6 @@ For commercial licensing, please contact support@quantumnous.com
 */
 import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { useStatus } from '@/hooks/use-status'
 
 const LABEL = 'nd-mono text-[11px] uppercase tracking-[0.14em]'
 const PRIMARY = `inline-flex h-11 items-center gap-2 bg-[var(--nd-text-display)] px-6 text-[var(--nd-bg)] transition-opacity duration-200 hover:opacity-90 ${LABEL}`
@@ -29,9 +28,6 @@ const GHOST = `inline-flex h-11 items-center gap-1.5 px-2 text-[var(--nd-text-se
  *  can act from the first screen without paging to the end. */
 export function CtaButtons({ isAuthenticated }: { isAuthenticated?: boolean }) {
   const { t } = useTranslation()
-  const { status } = useStatus()
-  const docsUrl =
-    (status?.docs_link as string | undefined) || 'https://docs.newapi.pro'
 
   return (
     <div className='flex flex-wrap items-center gap-3'>
@@ -51,15 +47,10 @@ export function CtaButtons({ isAuthenticated }: { isAuthenticated?: boolean }) {
         {t('View Pricing')}
       </Link>
 
-      <a
-        href={docsUrl}
-        target='_blank'
-        rel='noopener noreferrer'
-        className={GHOST}
-      >
+      <Link to='/docs' className={GHOST}>
         {t('Docs')}
-        <span aria-hidden>↗</span>
-      </a>
+        <span aria-hidden>→</span>
+      </Link>
     </div>
   )
 }

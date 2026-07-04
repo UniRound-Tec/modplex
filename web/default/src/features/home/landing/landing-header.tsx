@@ -19,7 +19,6 @@ For commercial licensing, please contact support@quantumnous.com
 import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/stores/auth-store'
-import { useStatus } from '@/hooks/use-status'
 import { BRAND_NAME } from './landing-constants'
 import { LandingLangMenu, LandingThemeToggle } from './landing-controls'
 import { LandingNotifications } from './landing-notifications'
@@ -31,12 +30,8 @@ const navLinkClass =
 export function LandingHeader() {
   const { t } = useTranslation()
   const { auth } = useAuthStore()
-  const { status } = useStatus()
 
   const isAuthenticated = !!auth.user
-  const docsUrl =
-    (status?.docs_link as string | undefined) || 'https://docs.newapi.pro'
-  const docsExternal = docsUrl.startsWith('http')
 
   return (
     <header className='pointer-events-none absolute inset-x-0 top-0 z-30'>
@@ -62,20 +57,9 @@ export function LandingHeader() {
           <Link to='/pricing' className={navLinkClass}>
             {t('Models')}
           </Link>
-          {docsExternal ? (
-            <a
-              href={docsUrl}
-              target='_blank'
-              rel='noopener noreferrer'
-              className={navLinkClass}
-            >
-              {t('Docs')}
-            </a>
-          ) : (
-            <Link to={docsUrl} className={navLinkClass}>
-              {t('Docs')}
-            </Link>
-          )}
+          <Link to='/docs' className={navLinkClass}>
+            {t('Docs')}
+          </Link>
         </nav>
 
         {/* Instruments + account, pinned right. */}
