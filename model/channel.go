@@ -9,11 +9,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/logger"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/constant"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/logger"
+	"github.com/zofar/modplex/types"
 
 	"github.com/samber/lo"
 	"gorm.io/gorm"
@@ -196,7 +196,7 @@ func (channel *Channel) GetKeys() []string {
 	return keys
 }
 
-func (channel *Channel) GetNextEnabledKey() (string, int, *types.NewAPIError) {
+func (channel *Channel) GetNextEnabledKey() (string, int, *types.ModplexError) {
 	// If not in multi-key mode, return the original key string directly.
 	if !channel.ChannelInfo.IsMultiKey {
 		return channel.Key, 0, nil

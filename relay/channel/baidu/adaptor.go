@@ -7,11 +7,11 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/relay/channel"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/relay/constant"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/relay/channel"
+	relaycommon "github.com/zofar/modplex/relay/common"
+	"github.com/zofar/modplex/relay/constant"
+	"github.com/zofar/modplex/types"
 
 	"github.com/gin-gonic/gin"
 )
@@ -147,7 +147,7 @@ func (a *Adaptor) DoRequest(c *gin.Context, info *relaycommon.RelayInfo, request
 	return channel.DoApiRequest(a, c, info, requestBody)
 }
 
-func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycommon.RelayInfo) (usage any, err *types.NewAPIError) {
+func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycommon.RelayInfo) (usage any, err *types.ModplexError) {
 	if info.IsStream {
 		err, usage = baiduStreamHandler(c, info, resp)
 	} else {

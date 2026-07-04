@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2023-2026 QuantumNous
+Copyright (C) 2023-2026 zofar
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact support@zofar.com
 */
 import { Fragment, useMemo } from 'react'
 import { Link } from '@tanstack/react-router'
@@ -41,9 +41,9 @@ interface FooterProps {
   className?: string
 }
 
-const NEW_API_FOOTER_ATTRIBUTION_KEY = [
+const MODPLEX_FOOTER_ATTRIBUTION_KEY = [
   'footer',
-  'new' + 'api',
+  'modplex',
   'projectAttributionSuffix',
 ].join('.')
 
@@ -128,14 +128,14 @@ function ProjectAttribution(props: { currentYear: number; inline?: boolean }) {
     <span className='text-muted-foreground/45'>
       &copy; {props.currentYear}{' '}
       <a
-        href='https://github.com/QuantumNous/new-api'
+        href='https://github.com/zofar/modplex'
         target='_blank'
         rel='noopener noreferrer'
         className='text-foreground/70 hover:text-foreground font-medium transition-colors'
       >
-        {t('New API')}
+        {t('Modplex')}
       </a>
-      . {t(NEW_API_FOOTER_ATTRIBUTION_KEY)}
+      . {t(MODPLEX_FOOTER_ATTRIBUTION_KEY)}
     </span>
   )
   if (props.inline) {
@@ -158,7 +158,7 @@ export function Footer(props: FooterProps) {
   } = useSystemConfig()
 
   const displayLogo = systemLogo || props.logo || '/logo.png'
-  const displayName = systemName || props.name || 'New API'
+  const displayName = systemName || props.name || 'Modplex'
   const isDemoSiteMode = Boolean(demoSiteEnabled)
   const currentYear = new Date().getFullYear()
 

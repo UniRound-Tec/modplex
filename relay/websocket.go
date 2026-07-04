@@ -3,16 +3,16 @@ package relay
 import (
 	"fmt"
 
-	"github.com/QuantumNous/new-api/dto"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/service"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/dto"
+	relaycommon "github.com/zofar/modplex/relay/common"
+	"github.com/zofar/modplex/service"
+	"github.com/zofar/modplex/types"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
 
-func WssHelper(c *gin.Context, info *relaycommon.RelayInfo) (newAPIError *types.NewAPIError) {
+func WssHelper(c *gin.Context, info *relaycommon.RelayInfo) (newAPIError *types.ModplexError) {
 	info.InitChannelMeta(c)
 
 	adaptor := GetAdaptor(info.ApiType)

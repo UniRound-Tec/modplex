@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/QuantumNous/new-api/common"
+	"github.com/zofar/modplex/common"
 )
 
 type OpenAIError struct {
@@ -26,7 +26,7 @@ type ClaudeError struct {
 type ErrorType string
 
 const (
-	ErrorTypeNewAPIError     ErrorType = "new_api_error"
+	ErrorTypeModplexError     ErrorType = "new_api_error"
 	ErrorTypeOpenAIError     ErrorType = "openai_error"
 	ErrorTypeClaudeError     ErrorType = "claude_error"
 	ErrorTypeMidjourneyError ErrorType = "midjourney_error"
@@ -87,7 +87,7 @@ const (
 	ErrorCodePreConsumeTokenQuotaFailed ErrorCode = "pre_consume_token_quota_failed"
 )
 
-type NewAPIError struct {
+type ModplexError struct {
 	Err            error
 	RelayError     any
 	skipRetry      bool
@@ -98,29 +98,29 @@ type NewAPIError struct {
 	Metadata       json.RawMessage
 }
 
-// Unwrap enables errors.Is / errors.As to work with NewAPIError by exposing the underlying error.
-func (e *NewAPIError) Unwrap() error {
+// Unwrap enables errors.Is / errors.As to work with ModplexError by exposing the underlying error.
+func (e *ModplexError) Unwrap() error {
 	if e == nil {
 		return nil
 	}
 	return e.Err
 }
 
-func (e *NewAPIError) GetErrorCode() ErrorCode {
+func (e *ModplexError) GetErrorCode() ErrorCode {
 	if e == nil {
 		return ""
 	}
 	return e.errorCode
 }
 
-func (e *NewAPIError) GetErrorType() ErrorType {
+func (e *ModplexError) GetErrorType() ErrorType {
 	if e == nil {
 		return ""
 	}
 	return e.errorType
 }
 
-func (e *NewAPIError) Error() string {
+func (e *ModplexError) Error() string {
 	if e == nil {
 		return ""
 	}
@@ -131,7 +131,7 @@ func (e *NewAPIError) Error() string {
 	return e.Err.Error()
 }
 
-func (e *NewAPIError) ErrorWithStatusCode() string {
+func (e *ModplexError) ErrorWithStatusCode() string {
 	if e == nil {
 		return ""
 	}
@@ -145,7 +145,7 @@ func (e *NewAPIError) ErrorWithStatusCode() string {
 	return fmt.Sprintf("status_code=%d, %s", e.StatusCode, msg)
 }
 
-func (e *NewAPIError) MaskSensitiveError() string {
+func (e *ModplexError) MaskSensitiveError() string {
 	if e == nil {
 		return ""
 	}
@@ -159,7 +159,7 @@ func (e *NewAPIError) MaskSensitiveError() string {
 	return common.MaskSensitiveInfo(errStr)
 }
 
-func (e *NewAPIError) MaskSensitiveErrorWithStatusCode() string {
+func (e *ModplexError) MaskSensitiveErrorWithStatusCode() string {
 	if e == nil {
 		return ""
 	}
@@ -173,11 +173,11 @@ func (e *NewAPIError) MaskSensitiveErrorWithStatusCode() string {
 	return fmt.Sprintf("status_code=%d, %s", e.StatusCode, msg)
 }
 
-func (e *NewAPIError) SetMessage(message string) {
+func (e *ModplexError) SetMessage(message string) {
 	e.Err = errors.New(message)
 }
 
-func (e *NewAPIError) ToOpenAIError() OpenAIError {
+func (e *ModplexError) ToOpenAIError() OpenAIError {
 	var result OpenAIError
 	switch e.errorType {
 	case ErrorTypeOpenAIError:
@@ -210,7 +210,7 @@ func (e *NewAPIError) ToOpenAIError() OpenAIError {
 	return result
 }
 
-func (e *NewAPIError) ToClaudeError() ClaudeError {
+func (e *ModplexError) ToClaudeError() ClaudeError {
 	var result ClaudeError
 	switch e.errorType {
 	case ErrorTypeOpenAIError:
@@ -239,10 +239,10 @@ func (e *NewAPIError) ToClaudeError() ClaudeError {
 	return result
 }
 
-type NewAPIErrorOptions func(*NewAPIError)
+type ModplexErrorOptions func(*ModplexError)
 
-func NewError(err error, errorCode ErrorCode, ops ...NewAPIErrorOptions) *NewAPIError {
-	var newErr *NewAPIError
+func NewError(err error, errorCode ErrorCode, ops ...ModplexErrorOptions) *ModplexError {
+	var newErr *ModplexError
 	// 保留深层传递的 new err
 	if errors.As(err, &newErr) {
 		for _, op := range ops {
@@ -250,10 +250,10 @@ func NewError(err error, errorCode ErrorCode, ops ...NewAPIErrorOptions) *NewAPI
 		}
 		return newErr
 	}
-	e := &NewAPIError{
+	e := &ModplexError{
 		Err:        err,
 		RelayError: nil,
-		errorType:  ErrorTypeNewAPIError,
+		errorType:  ErrorTypeModplexError,
 		StatusCode: http.StatusInternalServerError,
 		errorCode:  errorCode,
 	}
@@ -263,8 +263,8 @@ func NewError(err error, errorCode ErrorCode, ops ...NewAPIErrorOptions) *NewAPI
 	return e
 }
 
-func NewOpenAIError(err error, errorCode ErrorCode, statusCode int, ops ...NewAPIErrorOptions) *NewAPIError {
-	var newErr *NewAPIError
+func NewOpenAIError(err error, errorCode ErrorCode, statusCode int, ops ...ModplexErrorOptions) *ModplexError {
+	var newErr *ModplexError
 	// 保留深层传递的 new err
 	if errors.As(err, &newErr) {
 		if newErr.RelayError == nil {
@@ -288,7 +288,7 @@ func NewOpenAIError(err error, errorCode ErrorCode, statusCode int, ops ...NewAP
 	return WithOpenAIError(openaiError, statusCode, ops...)
 }
 
-func InitOpenAIError(errorCode ErrorCode, statusCode int, ops ...NewAPIErrorOptions) *NewAPIError {
+func InitOpenAIError(errorCode ErrorCode, statusCode int, ops ...ModplexErrorOptions) *ModplexError {
 	openaiError := OpenAIError{
 		Type: string(errorCode),
 		Code: errorCode,
@@ -296,14 +296,14 @@ func InitOpenAIError(errorCode ErrorCode, statusCode int, ops ...NewAPIErrorOpti
 	return WithOpenAIError(openaiError, statusCode, ops...)
 }
 
-func NewErrorWithStatusCode(err error, errorCode ErrorCode, statusCode int, ops ...NewAPIErrorOptions) *NewAPIError {
-	e := &NewAPIError{
+func NewErrorWithStatusCode(err error, errorCode ErrorCode, statusCode int, ops ...ModplexErrorOptions) *ModplexError {
+	e := &ModplexError{
 		Err: err,
 		RelayError: OpenAIError{
 			Message: err.Error(),
 			Type:    string(errorCode),
 		},
-		errorType:  ErrorTypeNewAPIError,
+		errorType:  ErrorTypeModplexError,
 		StatusCode: statusCode,
 		errorCode:  errorCode,
 	}
@@ -314,7 +314,7 @@ func NewErrorWithStatusCode(err error, errorCode ErrorCode, statusCode int, ops 
 	return e
 }
 
-func WithOpenAIError(openAIError OpenAIError, statusCode int, ops ...NewAPIErrorOptions) *NewAPIError {
+func WithOpenAIError(openAIError OpenAIError, statusCode int, ops ...ModplexErrorOptions) *ModplexError {
 	code, ok := openAIError.Code.(string)
 	if !ok {
 		if openAIError.Code != nil {
@@ -326,7 +326,7 @@ func WithOpenAIError(openAIError OpenAIError, statusCode int, ops ...NewAPIError
 	if openAIError.Type == "" {
 		openAIError.Type = "upstream_error"
 	}
-	e := &NewAPIError{
+	e := &ModplexError{
 		RelayError: openAIError,
 		errorType:  ErrorTypeOpenAIError,
 		StatusCode: statusCode,
@@ -346,11 +346,11 @@ func WithOpenAIError(openAIError OpenAIError, statusCode int, ops ...NewAPIError
 	return e
 }
 
-func WithClaudeError(claudeError ClaudeError, statusCode int, ops ...NewAPIErrorOptions) *NewAPIError {
+func WithClaudeError(claudeError ClaudeError, statusCode int, ops ...ModplexErrorOptions) *ModplexError {
 	if claudeError.Type == "" {
 		claudeError.Type = "upstream_error"
 	}
-	e := &NewAPIError{
+	e := &ModplexError{
 		RelayError: claudeError,
 		errorType:  ErrorTypeClaudeError,
 		StatusCode: statusCode,
@@ -363,14 +363,14 @@ func WithClaudeError(claudeError ClaudeError, statusCode int, ops ...NewAPIError
 	return e
 }
 
-func IsChannelError(err *NewAPIError) bool {
+func IsChannelError(err *ModplexError) bool {
 	if err == nil {
 		return false
 	}
 	return strings.HasPrefix(string(err.errorCode), "channel:")
 }
 
-func IsSkipRetryError(err *NewAPIError) bool {
+func IsSkipRetryError(err *ModplexError) bool {
 	if err == nil {
 		return false
 	}
@@ -378,26 +378,26 @@ func IsSkipRetryError(err *NewAPIError) bool {
 	return err.skipRetry
 }
 
-func ErrOptionWithSkipRetry() NewAPIErrorOptions {
-	return func(e *NewAPIError) {
+func ErrOptionWithSkipRetry() ModplexErrorOptions {
+	return func(e *ModplexError) {
 		e.skipRetry = true
 	}
 }
 
-func ErrOptionWithNoRecordErrorLog() NewAPIErrorOptions {
-	return func(e *NewAPIError) {
+func ErrOptionWithNoRecordErrorLog() ModplexErrorOptions {
+	return func(e *ModplexError) {
 		e.recordErrorLog = common.GetPointer(false)
 	}
 }
 
-func ErrOptionWithStatusCode(statusCode int) NewAPIErrorOptions {
-	return func(e *NewAPIError) {
+func ErrOptionWithStatusCode(statusCode int) ModplexErrorOptions {
+	return func(e *ModplexError) {
 		e.StatusCode = statusCode
 	}
 }
 
-func ErrOptionWithHideErrMsg(replaceStr string) NewAPIErrorOptions {
-	return func(e *NewAPIError) {
+func ErrOptionWithHideErrMsg(replaceStr string) ModplexErrorOptions {
+	return func(e *ModplexError) {
 		if common.DebugEnabled {
 			fmt.Printf("ErrOptionWithHideErrMsg: %s, origin error: %s", replaceStr, e.Err)
 		}
@@ -405,7 +405,7 @@ func ErrOptionWithHideErrMsg(replaceStr string) NewAPIErrorOptions {
 	}
 }
 
-func IsRecordErrorLog(e *NewAPIError) bool {
+func IsRecordErrorLog(e *ModplexError) bool {
 	if e == nil {
 		return false
 	}

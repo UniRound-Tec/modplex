@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/common/limiter"
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/setting"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/common/limiter"
+	"github.com/zofar/modplex/constant"
+	"github.com/zofar/modplex/setting"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"

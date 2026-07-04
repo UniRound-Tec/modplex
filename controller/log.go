@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/model"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/model"
 
 	"github.com/gin-gonic/gin"
 )

@@ -4,15 +4,15 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/service"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/service"
+	"github.com/zofar/modplex/types"
 
 	"github.com/gin-gonic/gin"
 )
 
-func OaiResponsesCompactionHandler(c *gin.Context, resp *http.Response) (*dto.Usage, *types.NewAPIError) {
+func OaiResponsesCompactionHandler(c *gin.Context, resp *http.Response) (*dto.Usage, *types.ModplexError) {
 	defer service.CloseResponseBodyGracefully(resp)
 
 	responseBody, err := io.ReadAll(resp.Body)

@@ -10,12 +10,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/logger"
-	"github.com/QuantumNous/new-api/model"
-	"github.com/QuantumNous/new-api/service"
-	"github.com/QuantumNous/new-api/setting/system_setting"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/constant"
+	"github.com/zofar/modplex/logger"
+	"github.com/zofar/modplex/model"
+	"github.com/zofar/modplex/service"
+	"github.com/zofar/modplex/setting/system_setting"
 
 	"github.com/gin-gonic/gin"
 )

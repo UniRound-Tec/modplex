@@ -5,8 +5,8 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/setting/operation_setting"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/setting/operation_setting"
 	"gorm.io/gorm"
 )
 

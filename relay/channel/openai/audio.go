@@ -7,14 +7,14 @@ import (
 	"math"
 	"net/http"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/logger"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/relay/helper"
-	"github.com/QuantumNous/new-api/service"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/constant"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/logger"
+	relaycommon "github.com/zofar/modplex/relay/common"
+	"github.com/zofar/modplex/relay/helper"
+	"github.com/zofar/modplex/service"
+	"github.com/zofar/modplex/types"
 	"github.com/gin-gonic/gin"
 )
 
@@ -114,7 +114,7 @@ func OpenaiTTSHandler(c *gin.Context, resp *http.Response, info *relaycommon.Rel
 	return usage
 }
 
-func OpenaiSTTHandler(c *gin.Context, resp *http.Response, info *relaycommon.RelayInfo, responseFormat string) (*types.NewAPIError, *dto.Usage) {
+func OpenaiSTTHandler(c *gin.Context, resp *http.Response, info *relaycommon.RelayInfo, responseFormat string) (*types.ModplexError, *dto.Usage) {
 	defer service.CloseResponseBodyGracefully(resp)
 
 	responseBody, err := io.ReadAll(resp.Body)

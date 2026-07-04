@@ -1,5 +1,5 @@
 {
-  "name": "new-api-web-workspace",
+  "name": "modplex-web-workspace",
   "private": true,
   "workspaces": [
     "default",

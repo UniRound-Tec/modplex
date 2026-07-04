@@ -5,11 +5,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/pkg/billingexpr"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/constant"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/pkg/billingexpr"
+	relaycommon "github.com/zofar/modplex/relay/common"
+	"github.com/zofar/modplex/types"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"

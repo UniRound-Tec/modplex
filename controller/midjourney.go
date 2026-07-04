@@ -9,13 +9,13 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/logger"
-	"github.com/QuantumNous/new-api/model"
-	"github.com/QuantumNous/new-api/service"
-	"github.com/QuantumNous/new-api/setting"
-	"github.com/QuantumNous/new-api/setting/system_setting"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/logger"
+	"github.com/zofar/modplex/model"
+	"github.com/zofar/modplex/service"
+	"github.com/zofar/modplex/setting"
+	"github.com/zofar/modplex/setting/system_setting"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,8 +1,8 @@
 <div align="center">
 
-![new-api](/web/default/public/logo.png)
+![modplex](/web/default/public/logo.png)
 
-# New API
+# Modplex
 
 🍥 **Passerelle de modèles étendus de nouvelle génération et système de gestion d'actifs d'IA**
 
@@ -15,30 +15,30 @@
 </p>
 
 <p align="center">
-  <a href="https://raw.githubusercontent.com/Calcium-Ion/new-api/main/LICENSE">
-    <img src="https://img.shields.io/github/license/Calcium-Ion/new-api?color=brightgreen" alt="licence">
+  <a href="https://raw.githubusercontent.com/zofar/modplex/main/LICENSE">
+    <img src="https://img.shields.io/github/license/zofar/modplex?color=brightgreen" alt="licence">
   </a><!--
-  --><a href="https://github.com/Calcium-Ion/new-api/releases/latest">
-    <img src="https://img.shields.io/github/v/release/Calcium-Ion/new-api?color=brightgreen&include_prereleases" alt="version">
+  --><a href="https://github.com/zofar/modplex/releases/latest">
+    <img src="https://img.shields.io/github/v/release/zofar/modplex?color=brightgreen&include_prereleases" alt="version">
   </a><!--
-  --><a href="https://hub.docker.com/r/CalciumIon/new-api">
+  --><a href="https://hub.docker.com/r/zofar/modplex">
     <img src="https://img.shields.io/badge/docker-dockerHub-blue" alt="docker">
   </a><!--
-  --><a href="https://goreportcard.com/report/github.com/Calcium-Ion/new-api">
-    <img src="https://goreportcard.com/badge/github.com/Calcium-Ion/new-api" alt="GoReportCard">
+  --><a href="https://goreportcard.com/report/github.com/zofar/modplex">
+    <img src="https://goreportcard.com/badge/github.com/zofar/modplex" alt="GoReportCard">
   </a>
 </p>
 
 <p align="center">
   <a href="https://trendshift.io/repositories/20180" target="_blank">
-    <img src="https://trendshift.io/api/badge/repositories/20180" alt="QuantumNous%2Fnew-api | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/>
+    <img src="https://trendshift.io/api/badge/repositories/20180" alt="zofar%2Fmodplex | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/>
   </a>
   <br>
-  <a href="https://hellogithub.com/repository/QuantumNous/new-api" target="_blank">
+  <a href="https://hellogithub.com/repository/zofar/modplex" target="_blank">
     <img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=539ac4217e69431684ad4a0bab768811&claim_uid=tbFPfKIDHpc4TzR" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" />
   </a><!--
-  --><a href="https://www.producthunt.com/products/new-api/launches/new-api?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-new-api" target="_blank" rel="noopener noreferrer">
-    <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1047693&theme=light&t=1769577875005" alt="New API - All-in-one AI asset management gateway. | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" />
+  --><a href="https://www.producthunt.com/products/modplex/launches/modplex?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-modplex" target="_blank" rel="noopener noreferrer">
+    <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1047693&theme=light&t=1769577875005" alt="Modplex - All-in-one AI asset management gateway. | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" />
   </a>
 </p>
 
@@ -78,7 +78,7 @@
   --><a href="https://bda.pku.edu.cn/" target="_blank">
     <img src="./docs/images/pku.png" alt="Université de Pékin" height="80" />
   </a><!--
-  --><a href="https://www.compshare.cn/?ytag=GPU_yy_gh_newapi" target="_blank">
+  --><a href="https://www.compshare.cn/?ytag=GPU_yy_gh_modplex" target="_blank">
     <img src="./docs/images/ucloud.png" alt="UCloud" height="80" />
   </a><!--
   --><a href="https://www.aliyun.com/" target="_blank">
@@ -94,13 +94,13 @@
 ## 🙏 Remerciements spéciaux
 
 <p align="center">
-  <a href="https://www.jetbrains.com/?from=new-api" target="_blank">
+  <a href="https://www.jetbrains.com/?from=modplex" target="_blank">
     <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" alt="JetBrains Logo" width="120" />
   </a>
 </p>
 
 <p align="center">
-  <strong>Merci à <a href="https://www.jetbrains.com/?from=new-api">JetBrains</a> pour avoir fourni une licence de développement open-source gratuite pour ce projet</strong>
+  <strong>Merci à <a href="https://www.jetbrains.com/?from=modplex">JetBrains</a> pour avoir fourni une licence de développement open-source gratuite pour ce projet</strong>
 </p>
 
 ---
@@ -111,8 +111,8 @@
 
 ```bash
 # Cloner le projet
-git clone https://github.com/QuantumNous/new-api.git
-cd new-api
+git clone https://github.com/zofar/modplex.git
+cd modplex
 
 # Modifier la configuration docker-compose.yml
 nano docker-compose.yml
@@ -126,22 +126,22 @@ docker-compose up -d
 
 ```bash
 # Tirer la dernière image
-docker pull calciumion/new-api:latest
+docker pull zofar/modplex:latest
 
 # Utilisation de SQLite (par défaut)
-docker run --name new-api -d --restart always \
+docker run --name modplex -d --restart always \
   -p 3000:3000 \
   -e TZ=Asia/Shanghai \
   -v ./data:/data \
-  calciumion/new-api:latest
+  zofar/modplex:latest
 
 # Utilisation de MySQL
-docker run --name new-api -d --restart always \
+docker run --name modplex -d --restart always \
   -p 3000:3000 \
   -e SQL_DSN="root:123456@tcp(localhost:3306)/oneapi" \
   -e TZ=Asia/Shanghai \
   -v ./data:/data \
-  calciumion/new-api:latest
+  zofar/modplex:latest
 ```
 
 > **💡 Astuce:** `-v ./data:/data` sauvegardera les données dans le dossier `data` du répertoire actuel, vous pouvez également le changer en chemin absolu comme `-v /your/custom/path:/data`
@@ -163,7 +163,7 @@ docker run --name new-api -d --restart always \
 
 <div align="center">
 
-### 📖 [Documentation officielle](https://docs.newapi.pro/en/docs) | [![Demander à DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/QuantumNous/new-api)
+### 📖 [Documentation officielle](https://docs.newapi.pro/en/docs) | [![Demander à DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/zofar/modplex)
 
 </div>
 
@@ -295,7 +295,7 @@ docker run --name new-api -d --restart always \
 ## 🚢 Déploiement
 
 > [!TIP]
-> **Dernière image Docker:** `calciumion/new-api:latest`
+> **Dernière image Docker:** `zofar/modplex:latest`
 
 ### 📋 Exigences de déploiement
 
@@ -322,12 +322,12 @@ docker run --name new-api -d --restart always \
 | `AZURE_DEFAULT_API_VERSION` | Version de l'API Azure | `2025-04-01-preview` |
 | `ERROR_LOG_ENABLED` | Interrupteur du journal d'erreurs | `false` |
 | `PYROSCOPE_URL` | Adresse du serveur Pyroscope | - |
-| `PYROSCOPE_APP_NAME` | Nom de l'application Pyroscope | `new-api` |
+| `PYROSCOPE_APP_NAME` | Nom de l'application Pyroscope | `modplex` |
 | `PYROSCOPE_BASIC_AUTH_USER` | Utilisateur Basic Auth Pyroscope | - |
 | `PYROSCOPE_BASIC_AUTH_PASSWORD` | Mot de passe Basic Auth Pyroscope | - |
 | `PYROSCOPE_MUTEX_RATE` | Taux d'échantillonnage mutex Pyroscope | `5` |
 | `PYROSCOPE_BLOCK_RATE` | Taux d'échantillonnage block Pyroscope | `5` |
-| `HOSTNAME` | Nom d'hôte tagué pour Pyroscope | `new-api` |
+| `HOSTNAME` | Nom d'hôte tagué pour Pyroscope | `modplex` |
 
 📖 **Configuration complète:** [Documentation des variables d'environnement](https://docs.newapi.pro/en/docs/installation/config-maintenance/environment-variables)
 
@@ -340,8 +340,8 @@ docker run --name new-api -d --restart always \
 
 ```bash
 # Cloner le projet
-git clone https://github.com/QuantumNous/new-api.git
-cd new-api
+git clone https://github.com/zofar/modplex.git
+cd modplex
 
 # Modifier la configuration
 nano docker-compose.yml
@@ -357,21 +357,21 @@ docker-compose up -d
 
 **Utilisation de SQLite:**
 ```bash
-docker run --name new-api -d --restart always \
+docker run --name modplex -d --restart always \
   -p 3000:3000 \
   -e TZ=Asia/Shanghai \
   -v ./data:/data \
-  calciumion/new-api:latest
+  zofar/modplex:latest
 ```
 
 **Utilisation de MySQL:**
 ```bash
-docker run --name new-api -d --restart always \
+docker run --name modplex -d --restart always \
   -p 3000:3000 \
   -e SQL_DSN="root:123456@tcp(localhost:3306)/oneapi" \
   -e TZ=Asia/Shanghai \
   -v ./data:/data \
-  calciumion/new-api:latest
+  zofar/modplex:latest
 ```
 
 > **💡 Explication du chemin:**
@@ -421,7 +421,7 @@ docker run --name new-api -d --restart always \
 | Projet | Description |
 |------|------|
 | [new-api-key-tool](https://github.com/Calcium-Ion/new-api-key-tool) | Outil de recherche de quota d'utilisation avec une clé |
-| [new-api-horizon](https://github.com/Calcium-Ion/new-api-horizon) | Version optimisée haute performance de New API |
+| [new-api-horizon](https://github.com/Calcium-Ion/new-api-horizon) | Version optimisée haute performance de Modplex |
 
 ---
 
@@ -453,7 +453,7 @@ Ce projet est sous licence [GNU Affero General Public License v3.0 (AGPLv3)](./L
 
 Il s'agit d'un projet open-source développé sur la base de [One API](https://github.com/songquanpeng/one-api) (licence MIT).
 
-Si les politiques de votre organisation ne permettent pas l'utilisation de logiciels sous licence AGPLv3, ou si vous souhaitez éviter les obligations open-source de l'AGPLv3, veuillez nous contacter à : [support@quantumnous.com](mailto:support@quantumnous.com)
+Si les politiques de votre organisation ne permettent pas l'utilisation de logiciels sous licence AGPLv3, ou si vous souhaitez éviter les obligations open-source de l'AGPLv3, veuillez nous contacter à : [support@zofar.com](mailto:support@zofar.com)
 
 ---
 
@@ -461,7 +461,7 @@ Si les politiques de votre organisation ne permettent pas l'utilisation de logic
 
 <div align="center">
 
-[![Graphique de l'historique des étoiles](https://api.star-history.com/svg?repos=Calcium-Ion/new-api&type=Date)](https://star-history.com/#Calcium-Ion/new-api&Date)
+[![Graphique de l'historique des étoiles](https://api.star-history.com/svg?repos=zofar/modplex&type=Date)](https://star-history.com/#zofar/modplex&Date)
 
 </div>
 
@@ -469,12 +469,12 @@ Si les politiques de votre organisation ne permettent pas l'utilisation de logic
 
 <div align="center">
 
-### 💖 Merci d'utiliser New API
+### 💖 Merci d'utiliser Modplex
 
 Si ce projet vous est utile, bienvenue à nous donner une ⭐️ Étoile！
 
-**[Documentation officielle](https://docs.newapi.pro/en/docs)** • **[Commentaires sur les problèmes](https://github.com/Calcium-Ion/new-api/issues)** • **[Dernière version](https://github.com/Calcium-Ion/new-api/releases)**
+**[Documentation officielle](https://docs.newapi.pro/en/docs)** • **[Commentaires sur les problèmes](https://github.com/zofar/modplex/issues)** • **[Dernière version](https://github.com/zofar/modplex/releases)**
 
-<sub>Construit avec ❤️ par QuantumNous</sub>
+<sub>Construit avec ❤️ par zofar</sub>
 
 </div>

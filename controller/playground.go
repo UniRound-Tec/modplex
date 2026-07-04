@@ -4,16 +4,16 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/QuantumNous/new-api/middleware"
-	"github.com/QuantumNous/new-api/model"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/middleware"
+	"github.com/zofar/modplex/model"
+	relaycommon "github.com/zofar/modplex/relay/common"
+	"github.com/zofar/modplex/types"
 
 	"github.com/gin-gonic/gin"
 )
 
 func Playground(c *gin.Context) {
-	var newAPIError *types.NewAPIError
+	var newAPIError *types.ModplexError
 
 	defer func() {
 		if newAPIError != nil {

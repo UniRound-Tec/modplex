@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/model"
-	"github.com/QuantumNous/new-api/setting/operation_setting"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/model"
+	"github.com/zofar/modplex/setting/operation_setting"
+	"github.com/zofar/modplex/types"
 )
 
 func formatNotifyType(channelId int, status int) string {
@@ -42,7 +42,7 @@ func EnableChannel(channelId int, usingKey string, channelName string) {
 	}
 }
 
-func ShouldDisableChannel(err *types.NewAPIError) bool {
+func ShouldDisableChannel(err *types.ModplexError) bool {
 	if !common.AutomaticDisableChannelEnabled {
 		return false
 	}
@@ -64,7 +64,7 @@ func ShouldDisableChannel(err *types.NewAPIError) bool {
 	return search
 }
 
-func ShouldEnableChannel(newAPIError *types.NewAPIError, status int) bool {
+func ShouldEnableChannel(newAPIError *types.ModplexError, status int) bool {
 	if !common.AutomaticEnableChannelEnabled {
 		return false
 	}

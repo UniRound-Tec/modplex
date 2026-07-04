@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2023-2026 QuantumNous
+Copyright (C) 2023-2026 zofar
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact support@zofar.com
 */
 import { useTranslation } from 'react-i18next'
 import { CtaButtons } from '../cta-buttons'
@@ -54,14 +54,14 @@ export function SceneStart({ isAuthenticated }: { isAuthenticated?: boolean }) {
       >
         &copy; {year}{' '}
         <a
-          href='https://github.com/QuantumNous/new-api'
+          href='https://github.com/zofar/modplex'
           target='_blank'
           rel='noopener noreferrer'
           className='text-[var(--nd-text-secondary)] transition-colors duration-200 hover:text-[var(--nd-text-display)]'
         >
-          {t('New API')}
+          {t('Modplex')}
         </a>
-        . {t('footer.newapi.projectAttributionSuffix')}
+        . {t('footer.modplex.projectAttributionSuffix')}
       </div>
     </SceneFrame>
   )

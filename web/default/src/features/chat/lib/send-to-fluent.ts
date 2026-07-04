@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2023-2026 QuantumNous
+Copyright (C) 2023-2026 zofar
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,20 +14,20 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact support@zofar.com
 */
 export function sendToFluent(apiKey: string, serverAddress?: string): boolean {
   if (typeof window === 'undefined') {
     return false
   }
 
-  const container = document.getElementById('fluent-new-api-container')
+  const container = document.getElementById('fluent-modplex-container')
   if (!container) {
     return false
   }
 
   const payload = {
-    id: 'new-api',
+    id: 'modplex',
     baseUrl: serverAddress || window.location.origin,
     apiKey: `sk-${apiKey}`,
   }

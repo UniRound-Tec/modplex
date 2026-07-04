@@ -4,11 +4,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/pkg/billingexpr"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/pkg/billingexpr"
+	relaycommon "github.com/zofar/modplex/relay/common"
+	"github.com/zofar/modplex/types"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"
 )

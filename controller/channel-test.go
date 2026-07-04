@@ -15,20 +15,20 @@ import (
 	"sync"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/middleware"
-	"github.com/QuantumNous/new-api/model"
-	"github.com/QuantumNous/new-api/pkg/billingexpr"
-	"github.com/QuantumNous/new-api/relay"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	relayconstant "github.com/QuantumNous/new-api/relay/constant"
-	"github.com/QuantumNous/new-api/relay/helper"
-	"github.com/QuantumNous/new-api/service"
-	"github.com/QuantumNous/new-api/setting/operation_setting"
-	"github.com/QuantumNous/new-api/setting/ratio_setting"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/constant"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/middleware"
+	"github.com/zofar/modplex/model"
+	"github.com/zofar/modplex/pkg/billingexpr"
+	"github.com/zofar/modplex/relay"
+	relaycommon "github.com/zofar/modplex/relay/common"
+	relayconstant "github.com/zofar/modplex/relay/constant"
+	"github.com/zofar/modplex/relay/helper"
+	"github.com/zofar/modplex/service"
+	"github.com/zofar/modplex/setting/operation_setting"
+	"github.com/zofar/modplex/setting/ratio_setting"
+	"github.com/zofar/modplex/types"
 
 	"github.com/bytedance/gopkg/util/gopool"
 	"github.com/samber/lo"
@@ -40,7 +40,7 @@ import (
 type testResult struct {
 	context     *gin.Context
 	localErr    error
-	newAPIError *types.NewAPIError
+	newAPIError *types.ModplexError
 }
 
 func normalizeChannelTestEndpoint(channel *model.Channel, modelName, endpointType string) string {
@@ -419,7 +419,7 @@ func testChannel(channel *model.Channel, testUserID int, testModel string, endpo
 				return testResult{
 					context:     c,
 					localErr:    fixedErr,
-					newAPIError: relaycommon.NewAPIErrorFromParamOverride(fixedErr),
+					newAPIError: relaycommon.ModplexErrorFromParamOverride(fixedErr),
 				}
 			}
 			return testResult{

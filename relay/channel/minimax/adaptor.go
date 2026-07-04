@@ -8,13 +8,13 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/relay/channel"
-	"github.com/QuantumNous/new-api/relay/channel/claude"
-	"github.com/QuantumNous/new-api/relay/channel/openai"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/relay/constant"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/relay/channel"
+	"github.com/zofar/modplex/relay/channel/claude"
+	"github.com/zofar/modplex/relay/channel/openai"
+	relaycommon "github.com/zofar/modplex/relay/common"
+	"github.com/zofar/modplex/relay/constant"
+	"github.com/zofar/modplex/types"
 
 	"github.com/gin-gonic/gin"
 	"github.com/samber/lo"
@@ -120,7 +120,7 @@ func (a *Adaptor) DoRequest(c *gin.Context, info *relaycommon.RelayInfo, request
 	return channel.DoApiRequest(a, c, info, requestBody)
 }
 
-func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycommon.RelayInfo) (usage any, err *types.NewAPIError) {
+func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycommon.RelayInfo) (usage any, err *types.ModplexError) {
 	if info.RelayMode == constant.RelayModeAudioSpeech {
 		return handleTTSResponse(c, resp, info)
 	}

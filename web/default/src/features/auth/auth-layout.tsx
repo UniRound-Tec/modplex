@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2023-2026 QuantumNous
+Copyright (C) 2023-2026 zofar
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact support@zofar.com
 */
 import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
@@ -24,7 +24,7 @@ type AuthLayoutProps = {
   children: React.ReactNode
 }
 
-/** Display brand — see the Modplex landing. The QuantumNous / New API
+/** Display brand — see the Modplex landing. The zofar / Modplex
  *  attribution is preserved in the panel footer (project policy, Rule 5). */
 const BRAND = 'Modplex'
 
@@ -78,14 +78,14 @@ export function AuthLayout({ children }: AuthLayoutProps) {
           <p className='nd-mono relative text-[11px] tracking-wide text-[var(--nd-text-disabled)]'>
             &copy; {year}{' '}
             <a
-              href='https://github.com/QuantumNous/new-api'
+              href='https://github.com/zofar/modplex'
               target='_blank'
               rel='noopener noreferrer'
               className='text-[var(--nd-text-secondary)] transition-colors duration-200 hover:text-[var(--nd-text-display)]'
             >
-              {t('New API')}
+              {t('Modplex')}
             </a>
-            . {t('footer.newapi.projectAttributionSuffix')}
+            . {t('footer.modplex.projectAttributionSuffix')}
           </p>
         </aside>
 

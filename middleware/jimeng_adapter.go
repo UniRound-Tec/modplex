@@ -6,9 +6,9 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
-	relayconstant "github.com/QuantumNous/new-api/relay/constant"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/constant"
+	relayconstant "github.com/zofar/modplex/relay/constant"
 	"github.com/gin-gonic/gin"
 )
 

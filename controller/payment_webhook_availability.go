@@ -3,8 +3,8 @@ package controller
 import (
 	"strings"
 
-	"github.com/QuantumNous/new-api/setting"
-	"github.com/QuantumNous/new-api/setting/operation_setting"
+	"github.com/zofar/modplex/setting"
+	"github.com/zofar/modplex/setting/operation_setting"
 )
 
 func isPaymentComplianceConfirmed() bool {

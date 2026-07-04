@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/logger"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/logger"
 
 	"gorm.io/gorm"
 )

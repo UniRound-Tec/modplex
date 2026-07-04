@@ -3,10 +3,10 @@ package controller
 import (
 	"net/http"
 
-	"github.com/QuantumNous/new-api/model"
-	"github.com/QuantumNous/new-api/service"
-	"github.com/QuantumNous/new-api/setting"
-	"github.com/QuantumNous/new-api/setting/ratio_setting"
+	"github.com/zofar/modplex/model"
+	"github.com/zofar/modplex/service"
+	"github.com/zofar/modplex/setting"
+	"github.com/zofar/modplex/setting/ratio_setting"
 
 	"github.com/gin-gonic/gin"
 )

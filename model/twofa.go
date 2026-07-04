@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
+	"github.com/zofar/modplex/common"
 
 	"gorm.io/gorm"
 )

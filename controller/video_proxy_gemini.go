@@ -6,10 +6,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/model"
-	"github.com/QuantumNous/new-api/relay"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/constant"
+	"github.com/zofar/modplex/model"
+	"github.com/zofar/modplex/relay"
 )
 
 func getGeminiVideoURL(channel *model.Channel, task *model.Task, apiKey string) (string, error) {

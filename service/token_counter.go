@@ -8,13 +8,13 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/logger"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	constant2 "github.com/QuantumNous/new-api/relay/constant"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/constant"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/logger"
+	relaycommon "github.com/zofar/modplex/relay/common"
+	constant2 "github.com/zofar/modplex/relay/constant"
+	"github.com/zofar/modplex/types"
 
 	"github.com/gin-gonic/gin"
 )

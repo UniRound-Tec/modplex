@@ -1,8 +1,8 @@
 package common
 
 import (
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/types"
 )
 
 func GuessRelayFormatFromRequest(req any) (types.RelayFormat, bool) {

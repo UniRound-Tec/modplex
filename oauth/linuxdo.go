@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/i18n"
-	"github.com/QuantumNous/new-api/logger"
-	"github.com/QuantumNous/new-api/model"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/i18n"
+	"github.com/zofar/modplex/logger"
+	"github.com/zofar/modplex/model"
 	"github.com/gin-gonic/gin"
 )
 

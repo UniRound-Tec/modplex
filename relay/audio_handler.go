@@ -5,17 +5,17 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/dto"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/relay/helper"
-	"github.com/QuantumNous/new-api/service"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/dto"
+	relaycommon "github.com/zofar/modplex/relay/common"
+	"github.com/zofar/modplex/relay/helper"
+	"github.com/zofar/modplex/service"
+	"github.com/zofar/modplex/types"
 
 	"github.com/gin-gonic/gin"
 )
 
-func AudioHelper(c *gin.Context, info *relaycommon.RelayInfo) (newAPIError *types.NewAPIError) {
+func AudioHelper(c *gin.Context, info *relaycommon.RelayInfo) (newAPIError *types.ModplexError) {
 	info.InitChannelMeta(c)
 
 	audioReq, ok := info.Request.(*dto.AudioRequest)

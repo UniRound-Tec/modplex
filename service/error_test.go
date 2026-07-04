@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/types"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"
 )
@@ -55,7 +55,7 @@ func TestResetStatusCode(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			newAPIError := &types.NewAPIError{
+			newAPIError := &types.ModplexError{
 				StatusCode: tc.statusCode,
 			}
 			ResetStatusCode(newAPIError, tc.statusCodeConfig)

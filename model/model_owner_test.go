@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/constant"
 	"github.com/stretchr/testify/require"
 )
 

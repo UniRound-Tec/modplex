@@ -6,11 +6,11 @@ import (
 	"math"
 	"strings"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/logger"
-	relayconstant "github.com/QuantumNous/new-api/relay/constant"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/logger"
+	relayconstant "github.com/zofar/modplex/relay/constant"
+	"github.com/zofar/modplex/types"
 	"github.com/samber/lo"
 
 	"github.com/gin-gonic/gin"

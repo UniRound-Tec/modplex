@@ -6,16 +6,16 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/logger"
-	"github.com/QuantumNous/new-api/relay/channel/gemini"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/relay/helper"
-	"github.com/QuantumNous/new-api/service"
-	"github.com/QuantumNous/new-api/setting/model_setting"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/constant"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/logger"
+	"github.com/zofar/modplex/relay/channel/gemini"
+	relaycommon "github.com/zofar/modplex/relay/common"
+	"github.com/zofar/modplex/relay/helper"
+	"github.com/zofar/modplex/service"
+	"github.com/zofar/modplex/setting/model_setting"
+	"github.com/zofar/modplex/types"
 
 	"github.com/gin-gonic/gin"
 )
@@ -51,7 +51,7 @@ func trimModelThinking(modelName string) string {
 	return modelName
 }
 
-func GeminiHelper(c *gin.Context, info *relaycommon.RelayInfo) (newAPIError *types.NewAPIError) {
+func GeminiHelper(c *gin.Context, info *relaycommon.RelayInfo) (newAPIError *types.ModplexError) {
 	info.InitChannelMeta(c)
 
 	geminiReq, ok := info.Request.(*dto.GeminiChatRequest)
@@ -204,7 +204,7 @@ func GeminiHelper(c *gin.Context, info *relaycommon.RelayInfo) (newAPIError *typ
 	return nil
 }
 
-func GeminiEmbeddingHandler(c *gin.Context, info *relaycommon.RelayInfo) (newAPIError *types.NewAPIError) {
+func GeminiEmbeddingHandler(c *gin.Context, info *relaycommon.RelayInfo) (newAPIError *types.ModplexError) {
 	info.InitChannelMeta(c)
 
 	isBatch := strings.HasSuffix(c.Request.URL.Path, "batchEmbedContents")

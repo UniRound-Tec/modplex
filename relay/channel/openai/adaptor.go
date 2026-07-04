@@ -12,24 +12,24 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/logger"
-	"github.com/QuantumNous/new-api/relay/channel"
-	"github.com/QuantumNous/new-api/relay/channel/ai360"
-	"github.com/QuantumNous/new-api/relay/channel/lingyiwanwu"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/constant"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/logger"
+	"github.com/zofar/modplex/relay/channel"
+	"github.com/zofar/modplex/relay/channel/ai360"
+	"github.com/zofar/modplex/relay/channel/lingyiwanwu"
 
-	//"github.com/QuantumNous/new-api/relay/channel/minimax"
-	"github.com/QuantumNous/new-api/relay/channel/openrouter"
-	"github.com/QuantumNous/new-api/relay/channel/xinference"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/relay/common_handler"
-	relayconstant "github.com/QuantumNous/new-api/relay/constant"
-	"github.com/QuantumNous/new-api/service"
-	"github.com/QuantumNous/new-api/setting/model_setting"
-	"github.com/QuantumNous/new-api/setting/reasoning"
-	"github.com/QuantumNous/new-api/types"
+	//"github.com/zofar/modplex/relay/channel/minimax"
+	"github.com/zofar/modplex/relay/channel/openrouter"
+	"github.com/zofar/modplex/relay/channel/xinference"
+	relaycommon "github.com/zofar/modplex/relay/common"
+	"github.com/zofar/modplex/relay/common_handler"
+	relayconstant "github.com/zofar/modplex/relay/constant"
+	"github.com/zofar/modplex/service"
+	"github.com/zofar/modplex/setting/model_setting"
+	"github.com/zofar/modplex/setting/reasoning"
+	"github.com/zofar/modplex/types"
 	"github.com/samber/lo"
 
 	"github.com/gin-gonic/gin"
@@ -217,10 +217,10 @@ func (a *Adaptor) SetupRequestHeader(c *gin.Context, header *http.Header, info *
 	}
 	if info.ChannelType == constant.ChannelTypeOpenRouter {
 		if header.Get("HTTP-Referer") == "" {
-			header.Set("HTTP-Referer", "https://www.newapi.ai")
+			header.Set("HTTP-Referer", "https://www.modplex.ai")
 		}
 		if header.Get("X-OpenRouter-Title") == "" {
-			header.Set("X-OpenRouter-Title", "New API")
+			header.Set("X-OpenRouter-Title", "Modplex")
 		}
 	}
 	return nil
@@ -612,7 +612,7 @@ func (a *Adaptor) DoRequest(c *gin.Context, info *relaycommon.RelayInfo, request
 	}
 }
 
-func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycommon.RelayInfo) (usage any, err *types.NewAPIError) {
+func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycommon.RelayInfo) (usage any, err *types.ModplexError) {
 	switch info.RelayMode {
 	case relayconstant.RelayModeRealtime:
 		err, usage = OpenaiRealtimeHandler(c, info)

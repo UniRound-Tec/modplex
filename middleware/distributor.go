@@ -10,15 +10,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/i18n"
-	"github.com/QuantumNous/new-api/model"
-	relayconstant "github.com/QuantumNous/new-api/relay/constant"
-	"github.com/QuantumNous/new-api/service"
-	"github.com/QuantumNous/new-api/setting/ratio_setting"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/constant"
+	"github.com/zofar/modplex/dto"
+	"github.com/zofar/modplex/i18n"
+	"github.com/zofar/modplex/model"
+	relayconstant "github.com/zofar/modplex/relay/constant"
+	"github.com/zofar/modplex/service"
+	"github.com/zofar/modplex/setting/ratio_setting"
+	"github.com/zofar/modplex/types"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tidwall/gjson"
@@ -423,7 +423,7 @@ func getTaskOriginModelName(c *gin.Context) string {
 	return ""
 }
 
-func SetupContextForSelectedChannel(c *gin.Context, channel *model.Channel, modelName string) *types.NewAPIError {
+func SetupContextForSelectedChannel(c *gin.Context, channel *model.Channel, modelName string) *types.ModplexError {
 	c.Set("original_model", modelName) // for retry
 	if channel == nil {
 		return types.NewError(errors.New("channel is nil"), types.ErrorCodeGetChannelFailed, types.ErrOptionWithSkipRetry())

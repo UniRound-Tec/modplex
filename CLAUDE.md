@@ -10,10 +10,10 @@ This deployment ships under the display brand **Modplex** with a bespoke, "nothi
 
 ### Branding & Attribution (AGPL-3.0)
 
-The project is licensed under AGPL-3.0 (see `LICENSE` and the per-file `Copyright (C) … QuantumNous` headers). Two separate concerns:
+The project is licensed under AGPL-3.0 (see `LICENSE` and the per-file `Copyright (C) … zofar` headers). Two separate concerns:
 
 - **Display name — customizable.** The user-facing product name and logo are deployment branding. Set them at runtime (Admin → Settings → `SystemName` / `Logo`); the baked fallbacks are `common/constants.go` (`SystemName`) and the `<title>`/meta in `web/{default,classic}/index.html`. This deployment uses **Modplex**.
-- **Copyright / license / attribution — preserved.** Do NOT remove or replace the AGPL license, the `Copyright (C) … QuantumNous` source-file headers, the upstream project credit, or the footer attribution linking to `github.com/QuantumNous/new-api`. AGPL requires these be kept intact regardless of display branding; renaming the product does not extend to stripping them.
+- **Copyright / license / attribution — preserved.** Do NOT remove or replace the AGPL license, the `Copyright (C) … zofar` source-file headers, the upstream project credit, or the footer attribution linking to `github.com/zofar/modplex`. AGPL requires these be kept intact regardless of display branding; renaming the product does not extend to stripping them.
 
 ### Nothing-design conventions (`web/default`)
 
@@ -44,7 +44,7 @@ The frontend must be built into `web/{default,classic}/dist` before the Go binar
 
 **Backend (run from repo root):**
 - Run dev server: `go run main.go` (serves on `:3000` by default; honors `.env` — copy from `.env.example`)
-- Build binary: `CGO_ENABLED=0 go build -o new-api` (SQLite uses the pure-Go `glebarez/sqlite` driver, so no CGO/gcc needed)
+- Build binary: `CGO_ENABLED=0 go build -o modplex` (SQLite uses the pure-Go `glebarez/sqlite` driver, so no CGO/gcc needed)
 - Vet: `go vet ./...`
 - Format: `gofmt -w <files>` (CI/review expect gofmt-clean code)
 - Run all tests: `go test ./...`

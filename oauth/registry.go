@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/model"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/model"
 )
 
 var (

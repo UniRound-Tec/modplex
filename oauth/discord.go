@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/QuantumNous/new-api/i18n"
-	"github.com/QuantumNous/new-api/logger"
-	"github.com/QuantumNous/new-api/model"
-	"github.com/QuantumNous/new-api/setting/system_setting"
+	"github.com/zofar/modplex/i18n"
+	"github.com/zofar/modplex/logger"
+	"github.com/zofar/modplex/model"
+	"github.com/zofar/modplex/setting/system_setting"
 	"github.com/gin-gonic/gin"
 )
 

@@ -3,8 +3,8 @@ package service
 import (
 	"strings"
 
-	"github.com/QuantumNous/new-api/setting"
-	"github.com/QuantumNous/new-api/setting/ratio_setting"
+	"github.com/zofar/modplex/setting"
+	"github.com/zofar/modplex/setting/ratio_setting"
 )
 
 func GetUserUsableGroups(userGroup string) map[string]string {

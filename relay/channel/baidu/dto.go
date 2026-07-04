@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/QuantumNous/new-api/dto"
+	"github.com/zofar/modplex/dto"
 )
 
 type BaiduMessage struct {

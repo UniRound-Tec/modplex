@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"io"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/constant"
 
 	"github.com/gin-gonic/gin"
 )

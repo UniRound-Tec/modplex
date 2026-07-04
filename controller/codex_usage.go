@@ -8,11 +8,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/model"
-	"github.com/QuantumNous/new-api/relay/channel/codex"
-	"github.com/QuantumNous/new-api/service"
+	"github.com/zofar/modplex/common"
+	"github.com/zofar/modplex/constant"
+	"github.com/zofar/modplex/model"
+	"github.com/zofar/modplex/relay/channel/codex"
+	"github.com/zofar/modplex/service"
 
 	"github.com/gin-gonic/gin"
 )
