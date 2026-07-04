@@ -92,6 +92,11 @@ For commercial licensing, please contact support@quantumnous.com
 
 /* Portaled nd surfaces inherit the body font + the instrument-panel feel. */
 .nd-scope {
+  /* Sharp corners are part of the nothing idiom. Unlike the full-remap scopes
+   * above, `.nd-scope` only carries token *values*, so it must zero `--radius`
+   * itself — otherwise nd-scope regions (the public header nav, portaled
+   * dropdown/popover/tooltip surfaces) inherit the global 1rem radius. */
+  --radius: 0px;
   font-family: var(--nd-font-body);
   color: var(--nd-text-primary);
 }
