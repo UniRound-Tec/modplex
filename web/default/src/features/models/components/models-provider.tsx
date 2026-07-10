@@ -34,6 +34,7 @@ import type {
 type DialogType =
   | 'create-model'
   | 'update-model'
+  | 'model-pricing'
   | 'create-vendor'
   | 'update-vendor'
   | 'missing-models'

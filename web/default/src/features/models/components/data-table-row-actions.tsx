@@ -19,7 +19,7 @@ For commercial licensing, please contact support@zofar.com
 import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { type Row } from '@tanstack/react-table'
-import { MoreHorizontal, Pencil, Power, PowerOff, Trash2 } from 'lucide-react'
+import { MoreHorizontal, Pencil, Power, PowerOff, Tag, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import {
@@ -57,6 +57,11 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
     setOpen('update-model')
   }
 
+  const handleEditPricing = () => {
+    setCurrentRow(model)
+    setOpen('model-pricing')
+  }
+
   const handleToggleStatus = () => {
     handleToggleModelStatus(model.id, model.status, queryClient)
   }
@@ -80,6 +85,14 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           {t('Edit')}
           <DropdownMenuShortcut>
             <Pencil size={16} />
+          </DropdownMenuShortcut>
+        </DropdownMenuItem>
+
+        {/* Pricing */}
+        <DropdownMenuItem onClick={handleEditPricing}>
+          {t('Pricing')}
+          <DropdownMenuShortcut>
+            <Tag size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
 

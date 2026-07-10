@@ -18,6 +18,7 @@ For commercial licensing, please contact support@zofar.com
 */
 import { DescriptionDialog } from './dialogs/description-dialog'
 import { MissingModelsDialog } from './dialogs/missing-models-dialog'
+import { ModelPricingDialog } from './dialogs/model-pricing-dialog'
 import { PrefillGroupManagement } from './dialogs/prefill-group-management'
 import { SyncWizardDialog } from './dialogs/sync-wizard-dialog'
 import { UpstreamConflictDialog } from './dialogs/upstream-conflict-dialog'
@@ -42,6 +43,13 @@ export function ModelsDialogs() {
         open={open === 'create-model' || open === 'update-model'}
         onOpenChange={(v) => !v && setOpen(null)}
         currentRow={currentRow}
+      />
+
+      {/* Per-model Pricing Sheet */}
+      <ModelPricingDialog
+        open={open === 'model-pricing'}
+        onOpenChange={(v) => !v && setOpen(null)}
+        modelName={currentRow?.model_name || ''}
       />
 
       {/* Vendor Create/Update Dialog */}
